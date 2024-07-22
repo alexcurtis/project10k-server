@@ -27,9 +27,8 @@ export class AccountResolver {
 
     @ResolveField(returns => [WorkspaceModel])
     async workspaces(@Parent() account) {
-        console.log('account', account);
-        const { workspace } = account;
-        return this.workspaceService.findByAccount(workspace);
+        const { id } = account;
+        return this.workspaceService.findByAccount(id);
     }
 
     // TODO OK DURING DEV. NEEDS TO BE REMOVED OR ADDED SECURITY
@@ -39,20 +38,5 @@ export class AccountResolver {
     ): Promise<AccountModel> {
         return await this.accountService.create({ name });
     }
-
-
-    // @Query(returns => AccountModel)
-    // async myAccount(): Promise<AccountModel> {
-    //     const accountId = 'test';
-    //     return await this.accountService.findOne(accountId);
-    // }
-
-    // Only Workspaces For Authenticated User
-    // @ResolveField(returns => [WorkspaceModel])
-    // async workspaces(@Parent() account) {
-    //     const { id } = account;
-    //     console.log('pulling in workspaces: ', account);
-    //     return this.accountService.findByAccount(id);
-    // }
 
 }

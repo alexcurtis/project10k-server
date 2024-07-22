@@ -7,12 +7,15 @@ import { CreateWorkspaceDTO } from './workspace.dto';
 
 import { AccountModel } from '../account/account.model';
 import { AccountService } from '../account/account.service';
+import { CompanyModel } from '../company/company.model';
+import { CompanyService } from '../company/company.service';
 
 @Resolver(of => WorkspaceModel)
 export class WorkspaceResolver {
     constructor(
         @Inject(WorkspaceService) private workspaceService: WorkspaceService,
-        @Inject(AccountService) private accountService: AccountService
+        @Inject(AccountService) private accountService: AccountService,
+        @Inject(CompanyService) private companyService: CompanyService
     ) { }
 
     @Query(returns => WorkspaceModel)
@@ -32,11 +35,12 @@ export class WorkspaceResolver {
         return this.accountService.findOne(account);
     }
 
-    // // Only Workspaces For Authenticated User
-    // @Query(returns => [WorkspaceModel])
-    // async myWorkspaces(): Promise<WorkspaceModel[]> {
-    //     return await this.workspaceService.findAll();
-    // }
+    @ResolveField(returns => [CompanyModel])
+    async companies(@Parent() workspace) {
+        const { id } = workspace;
+        const hydratedWorkspace = await this.workspaceService.findOneHydrated(id);
+        return hydratedWorkspace.companies;
+    }
 
     @Mutation(returns => WorkspaceModel)
     async createWorkspace(
@@ -45,13 +49,13 @@ export class WorkspaceResolver {
         return await this.workspaceService.create(workspace)
     }
 
-    // @Mutation(returns => WorkspaceModel)
-    // async createWorkspace(
-    //     @Args('name') name: string
-    // ): Promise<WorkspaceModel> {
-    //     return await this.workspaceService.create({
-    //         name
-    //     }, accountId);
-    // }
+    @Mutation(returns => WorkspaceModel)
+    async addCompanyToWorkspace(
+        @Args('id') id: string,
+        @Args('companyId') companyId: string,
+    ): Promise<WorkspaceModel> {
+        return await this.workspaceService.addCompany(id, companyId);
+    }
+
 
 }
