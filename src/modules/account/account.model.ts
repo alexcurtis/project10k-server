@@ -8,11 +8,11 @@ import {
 } from 'typeorm';
 
 import { ObjectType, Field } from '@nestjs/graphql';
-// import { InvoiceModel } from '../invoice/invoice.model';
+import { WorkspaceModel } from '../workspace/workspace.model';
 
 @ObjectType()
 @Entity()
-export class WorkspaceModel {
+export class AccountModel {
   @Field()
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -21,9 +21,9 @@ export class WorkspaceModel {
   @Column({ length: 500, nullable: false })
   name: string;
 
-//   @Field(type => [InvoiceModel], { nullable: true })
-//   @OneToMany(type => InvoiceModel, invoice => invoice.customer)
-//   invoices: InvoiceModel[]
+  @Field(type => [WorkspaceModel], { nullable: true })
+  @OneToMany(type => WorkspaceModel, workspace => workspace.account)
+  workspaces: WorkspaceModel[]
 
   @Field()
   @Column()

@@ -4,7 +4,10 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { join } from 'path';
 
-import { WorkspaceModule } from './workspace/workspace.module'; 
+import { AccountModule } from './modules/account/account.module';
+import { WorkspaceModule } from './modules/workspace/workspace.module'; 
+import { CompanyModule } from './modules/company/company.module'; 
+
 
 @Module({
     imports: [
@@ -24,7 +27,9 @@ import { WorkspaceModule } from './workspace/workspace.module';
             sortSchema: true, // Auto Sort The Schema Alphabetically (Rather Than Code Definition)
             // playground: false // Turn Off Playground (Production Mode)
         }),
-        WorkspaceModule
+        AccountModule,
+        WorkspaceModule,
+        CompanyModule
     ],
 })
 export class AppModule { }
