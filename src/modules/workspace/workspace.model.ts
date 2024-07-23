@@ -6,12 +6,15 @@ import {
     UpdateDateColumn,
     ManyToMany,
     ManyToOne,
-    JoinTable
+    OneToOne,
+    JoinTable,
+    JoinColumn
 } from 'typeorm';
 
 import { ObjectType, Field } from '@nestjs/graphql';
 import { AccountModel } from './../account/account.model';
 import { CompanyModel } from './../company/company.model';
+import { JournalModel } from './../journal/journal.model';
 
 @ObjectType()
 @Entity()
@@ -34,6 +37,12 @@ export class WorkspaceModel {
     @ManyToMany(type => CompanyModel)
     @JoinTable()
     companies: CompanyModel[]
+
+    // Journal Referenced
+    @Field(type => JournalModel)
+    @OneToOne(() => JournalModel)
+    @JoinColumn()
+    journal: JournalModel
 
     @Field()
     @Column()

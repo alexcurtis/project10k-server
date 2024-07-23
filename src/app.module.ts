@@ -7,6 +7,7 @@ import { join } from 'path';
 import { AccountModule } from './modules/account/account.module';
 import { WorkspaceModule } from './modules/workspace/workspace.module'; 
 import { CompanyModule } from './modules/company/company.module'; 
+import { JournalModule } from './modules/journal/journal.module'; 
 
 
 @Module({
@@ -29,7 +30,8 @@ import { CompanyModule } from './modules/company/company.module';
         }),
         AccountModule,
         WorkspaceModule,
-        CompanyModule
+        CompanyModule,
+        JournalModule
     ],
 })
 export class AppModule { }

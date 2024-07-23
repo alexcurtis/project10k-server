@@ -7,7 +7,7 @@ import { CreateWorkspaceDTO } from './workspace.dto';
 import { AccountService } from '../account/account.service';
 import { CompanyService } from '../company/company.service';
 import { CompanyModel } from '../company/company.model';
-
+import { JournalService } from '../journal/journal.service';
 
 @Injectable()
 export class WorkspaceService {
@@ -15,15 +15,22 @@ export class WorkspaceService {
         @InjectRepository(WorkspaceModel)
         private workspaceRepository: Repository<WorkspaceModel>,
         private accountService: AccountService,
-        private companyService: CompanyService
+        private companyService: CompanyService,
+        private journalService: JournalService
     ) { }
 
     async create(workspace: CreateWorkspaceDTO): Promise<WorkspaceModel> {
+        // Find The Account (So We Can Get The Reference)
+        console.log('in create workspace func');
         const account = await this.accountService.findOne(workspace.account);
-        console.log('finding....', workspace.account, account);
+        // Create A New Journal (1:1 Relationship)
+        const journal = await this.journalService.createEmpty();
+
+        console.log('creating workspace....', workspace.account, account, journal);
         return this.workspaceRepository.save({
             ...workspace,
-            account
+            account,
+            journal
         });
     }
 
@@ -45,8 +52,13 @@ export class WorkspaceService {
         return this.workspaceRepository.find();
     }
 
-    findOne(id: string): Promise<WorkspaceModel> {
-        return this.workspaceRepository.findOneBy({ id });
+    findOne(id: string, withJournal: boolean): Promise<WorkspaceModel> {
+        return this.workspaceRepository.findOne({
+            where: {id: id},
+            relations: {
+                journal: withJournal
+            }
+        });
     }
 
     findByAccount(accountId): Promise<WorkspaceModel[]> {
