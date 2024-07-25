@@ -23,7 +23,7 @@ export class JournalEntryService {
     //     return newJournalEntry.save();
     // }
 
-    async createDefault(journal: Journal): Promise<JournalEntry> {
+    async createOnJournal(journal: Journal): Promise<JournalEntry> {
         const defaultJournalEntry = new this.journalEntryModel({
             ...defaultJournalEntryData,
             journal

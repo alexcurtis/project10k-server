@@ -2,7 +2,20 @@ import { InputType, Field } from '@nestjs/graphql';
 import GraphQLJSON from 'graphql-type-json';
 
 export const defaultJournalEntryData = {
-    content: { hello: "world", json: {is: "here"}}
+    content: {
+        type: 'doc',
+        content: [{
+            type: 'paragraph',
+            attrs: {
+                class: null,
+                textAlign: 'left'
+            },
+            content: [{
+                type: 'text',
+                text: 'hello world'
+            }]
+        }]
+    }
 }
 
 @InputType()

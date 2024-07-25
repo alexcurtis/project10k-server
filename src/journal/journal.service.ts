@@ -26,13 +26,13 @@ export class JournalService {
         return newJournal.save();
     }
 
-    async createDefault(workspace: Workspace): Promise<Journal> {
+    async createOnWorkspace(workspace: Workspace): Promise<Journal> {
         const defaultJournal = new this.journalModel({
             ...defaultJournalData,
             workspace
         });
         // Each Journal Has 1 Journal Entry (And Never Any Fewer)
-        const defaultJournalEntry = await this.journalEntryService.createDefault(defaultJournal);
+        const defaultJournalEntry = await this.journalEntryService.createOnJournal(defaultJournal);
         defaultJournal.journalEntry = defaultJournalEntry;
         return defaultJournal.save();
     }

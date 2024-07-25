@@ -35,6 +35,13 @@ export class WorkspaceResolver {
     }
 
     @Mutation(() => Workspace)
+    async createNewJournalOnWorkspace(
+        @Args('id', { type: () => ID }) id: string,
+    ): Promise<Workspace> {
+        return this.workspaceService.createNewJournalOnWorkspace(id);
+    }
+
+    @Mutation(() => Workspace)
     async updateWorkspace(
         @Args('id', { type: () => ID }) id: string,
         @Args('workspace') workspace: InputWorkspaceDto,

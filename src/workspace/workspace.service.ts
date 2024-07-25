@@ -37,10 +37,18 @@ export class WorkspaceService {
             journals: []
         });
         // Each Account Has 1 Initial Journal (And Never Any Fewer)
-        const defaultJournal = await this.journalService.createDefault(defaultWorkspace);
+        const defaultJournal = await this.journalService.createOnWorkspace(defaultWorkspace);
         defaultWorkspace.journals.push(defaultJournal);
         return defaultWorkspace.save();
     }
+
+    async createNewJournalOnWorkspace(id): Promise<Workspace> {
+        const workspace = await this.findOne(id);
+        // Each Account Has 1 Initial Journal (And Never Any Fewer)
+        const newJournal = await this.journalService.createOnWorkspace(workspace);
+        workspace.journals.push(newJournal);
+        return workspace.save();
+    }    
 
     async update(id: string, workspace: InputWorkspaceDto): Promise<Workspace> {
         return this.workspaceModel.findByIdAndUpdate(id, workspace, { new: true }).exec();

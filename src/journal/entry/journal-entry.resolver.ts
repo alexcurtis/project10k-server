@@ -8,12 +8,12 @@ export class JournalEntryResolver {
     constructor(private readonly journalEntryService: JournalEntryService) { }
 
     @Query(() => [JournalEntry])
-    async journals(): Promise<JournalEntry[]> {
+    async journalEntries(): Promise<JournalEntry[]> {
         return this.journalEntryService.findAll();
     }
 
     @Query(() => JournalEntry)
-    async journal(
+    async journalEntry(
         @Args('id', { type: () => ID }) id: string
     ): Promise<JournalEntry> {
         return this.journalEntryService.findOne(id);
