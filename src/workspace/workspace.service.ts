@@ -39,7 +39,6 @@ export class WorkspaceService {
         // Each Account Has 1 Initial Journal (And Never Any Fewer)
         const defaultJournal = await this.journalService.createDefault(defaultWorkspace);
         defaultWorkspace.journals.push(defaultJournal);
-        console.log('defaultWorkspace', defaultWorkspace);
         return defaultWorkspace.save();
     }
 

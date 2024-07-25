@@ -4,8 +4,6 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
 import { Workspace } from '../workspace/workspace.model';
 
-console.log('testa', Workspace);
-
 @ObjectType()
 @Schema({ timestamps: true })
 export class Account extends Document {

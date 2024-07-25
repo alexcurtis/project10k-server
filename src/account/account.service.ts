@@ -33,7 +33,6 @@ export class AccountService {
         // Each Account Has 1 Initial Workspace
         const defaultWorkspace = await this.workspaceService.createDefault(newAccount); 
         newAccount.workspaces.push(defaultWorkspace);
-        console.log('account', newAccount);
         return newAccount.save();
     }
 

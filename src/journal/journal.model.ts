@@ -4,32 +4,39 @@ import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
 import { Workspace } from '../workspace/workspace.model';
 
+@ObjectType()
 @Schema()
 class MindMapNodeEdge {
-    @Prop({ type: MongooseSchema.Types.ObjectId })
-    target: MongooseSchema.Types.ObjectId
+    @Field(() => ID)
+    @Prop({ type: MongooseSchema.Types.ObjectId})
+    target: MongooseSchema.Types.ObjectId;
 }
 
 const MindMapNodeEdgeSchema = SchemaFactory.createForClass(MindMapNodeEdge);
 
+@ObjectType()
 @Schema()
 class MindMapNodePosition {
+    @Field()
     @Prop()
     x: number;
 
+    @Field()
     @Prop()
     y: number;
 }
 
 const MindMapNodePositionSchema = SchemaFactory.createForClass(MindMapNodePosition);
 
-// @ObjectType()
+@ObjectType()
 @Schema()
 class MindMapNode {
+    @Field(() => MindMapNodePosition)
     @Prop({ type: MindMapNodePositionSchema })
     position: MindMapNodePosition;
 
-    @Prop({ type: [MindMapNodeEdgeSchema] })
+    @Field(() => [MindMapNodeEdge])
+    @Prop({ type: [{ type: MindMapNodeEdgeSchema }] })
     edges: MindMapNodeEdge[];
 }
 
@@ -48,7 +55,7 @@ export class Journal extends Document {
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Workspace' })
     workspace: Workspace;
 
-    // @Field()
+    @Field(() => MindMapNode)
     @Prop({ type: MindMapNodeSchema, required: true })
     mindMapNode: MindMapNode;
 }
