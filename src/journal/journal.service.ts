@@ -4,10 +4,13 @@ import { Model } from 'mongoose';
 import { Journal } from './journal.model';
 import { Workspace } from '../workspace/workspace.model';
 import { InputJournalDto, defaultJournalData } from './journal.dto';
+import { JournalEntryService } from './entry/journal-entry.service';
 
 @Injectable()
 export class JournalService {
-    constructor(@InjectModel(Journal.name) private journalModel: Model<Journal>) { }
+    constructor(@InjectModel(Journal.name)
+        private journalModel: Model<Journal>,
+        private journalEntryService: JournalEntryService) { }
 
     async findAll(): Promise<Journal[]> {
         return this.journalModel.find().exec();
@@ -28,6 +31,9 @@ export class JournalService {
             ...defaultJournalData,
             workspace
         });
+        // Each Journal Has 1 Journal Entry (And Never Any Fewer)
+        const defaultJournalEntry = await this.journalEntryService.createDefault(defaultJournal);
+        defaultJournal.journalEntry = defaultJournalEntry;
         return defaultJournal.save();
     }
 

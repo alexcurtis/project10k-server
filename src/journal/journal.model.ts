@@ -1,8 +1,9 @@
 // book.model.ts
 import { Field, ObjectType, ID } from '@nestjs/graphql';
-import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
 import { Workspace } from '../workspace/workspace.model';
+import { JournalEntry } from './entry/journal-entry.model';
 
 @ObjectType()
 @Schema()
@@ -52,8 +53,13 @@ export class Journal extends Document {
     @Prop({ defaultValue: 'Untitled Journal' })
     name: string;
 
+    @Field(() => ID)
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Workspace' })
     workspace: Workspace;
+
+    @Field(() => ID)
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'JournalEntry' })
+    journalEntry: JournalEntry;
 
     @Field(() => MindMapNode)
     @Prop({ type: MindMapNodeSchema, required: true })

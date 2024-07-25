@@ -3,7 +3,8 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { JournalService } from './journal.service';
 import { JournalResolver } from './journal.resolver';
 import { Journal, JournalSchema } from './journal.model';
-import { WorkspaceModule } from "src/workspace/workspace.module";
+import { WorkspaceModule } from '../workspace/workspace.module';
+import { JournalEntryModule } from './entry/journal-entry.module';
 
 @Module({
     providers: [
@@ -16,7 +17,8 @@ import { WorkspaceModule } from "src/workspace/workspace.module";
             schema: JournalSchema,
         },
     ]),
-    forwardRef(() => WorkspaceModule)
+    forwardRef(() => WorkspaceModule),
+    forwardRef(() => JournalEntryModule)
     ],
     exports: [JournalService]
 })

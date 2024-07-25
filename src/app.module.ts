@@ -4,11 +4,13 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
+import GraphQLJSON from 'graphql-type-json';
 
 import mongodbConfig from './config/mongodb.config';
 import { AccountModule } from './account/account.module';
 import { WorkspaceModule } from './workspace/workspace.module';
 import { JournalModule } from './journal/journal.module';
+import { JournalEntryModule } from './journal/entry/journal-entry.module';
 
 @Module({
     imports: [
@@ -26,6 +28,7 @@ import { JournalModule } from './journal/journal.module';
               playground: true,
               debug: configService.get<boolean>("DEBUG"),
               uploads: false,
+              resolvers: { JSON: GraphQLJSON },
             }),
         }),
         MongooseModule.forRootAsync({
@@ -37,7 +40,8 @@ import { JournalModule } from './journal/journal.module';
         }),
         AccountModule,
         WorkspaceModule,
-        JournalModule
+        JournalModule,
+        JournalEntryModule
     ]
 })
 export class AppModule { }

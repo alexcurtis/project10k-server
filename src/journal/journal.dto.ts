@@ -7,10 +7,7 @@ export const defaultJournalData = {
             x: 200,
             y: 200
         },
-        edges: [{
-            target: '66a2313bfd0476f3f5927b78'
-        }
-        ]
+        edges: []
     }
 }
 
