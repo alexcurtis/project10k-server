@@ -8,6 +8,7 @@ import { join } from 'path';
 import mongodbConfig from './config/mongodb.config';
 import { AccountModule } from './account/account.module';
 import { WorkspaceModule } from './workspace/workspace.module';
+import { JournalModule } from './journal/journal.module';
 
 @Module({
     imports: [
@@ -35,7 +36,8 @@ import { WorkspaceModule } from './workspace/workspace.module';
             })
         }),
         AccountModule,
-        WorkspaceModule
+        WorkspaceModule,
+        JournalModule
     ]
 })
 export class AppModule { }

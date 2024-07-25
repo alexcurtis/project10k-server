@@ -1,8 +1,10 @@
 // book.model.ts
-import { Field, ObjectType, ID } from '@nestjs/graphql';
+import { Field, HideField, ObjectType, ID } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
 import { Workspace } from '../workspace/workspace.model';
+
+console.log('testa', Workspace);
 
 @ObjectType()
 @Schema({ timestamps: true })
@@ -22,12 +24,13 @@ export class Account extends Document {
     @Prop()
     email: string;
 
-    @Field()
+    // This Should Not Be A GraphQL Field
+    @HideField()
     @Prop()
     password: string;
 
     @Field(() => [Workspace])
-    @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: Workspace.name }] })
+    @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Workspace' }] })
     workspaces: Workspace[];
 }
 
