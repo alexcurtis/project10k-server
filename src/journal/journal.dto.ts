@@ -15,4 +15,8 @@ export const defaultJournalData = {
 export class InputJournalDto {
     @Field()
     name: string;
+
+    // @Field(() => String, { nullable: true })
+    // // @Field()
+    // optionalTest: string;
 }

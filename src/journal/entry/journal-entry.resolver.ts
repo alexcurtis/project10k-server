@@ -30,9 +30,9 @@ export class JournalEntryResolver {
     @Mutation(() => JournalEntry)
     async updateJournalEntry(
         @Args('id', { type: () => ID }) id: string,
-        @Args('entry') entry: InputJournalEntryDto,
+        @Args('journalEntry') journalEntry: InputJournalEntryDto,
     ): Promise<JournalEntry> {
-        return this.journalEntryService.update(id, entry);
+        return this.journalEntryService.update(id, journalEntry);
     }
 
     @Mutation(() => JournalEntry)
