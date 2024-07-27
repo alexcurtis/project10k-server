@@ -31,7 +31,10 @@ const MindMapNodePositionSchema = SchemaFactory.createForClass(MindMapNodePositi
 
 @ObjectType()
 @Schema()
-class MindMapNode {
+export class MindMapNode {
+    @Field(() => ID, { nullable: true })
+    _id: Types.ObjectId;
+    
     @Field(() => MindMapNodePosition)
     @Prop({ type: MindMapNodePositionSchema })
     position: MindMapNodePosition;
