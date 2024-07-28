@@ -37,15 +37,34 @@ export class JournalService {
         return defaultJournal.save();
     }
 
+    // async update(id: string, journal: InputJournalDto): Promise<Journal> {
+    //     return this.journalModel.findByIdAndUpdate(id, journal, { new: true }).exec();
+    // }
+
+
     async update(id: string, journal: InputJournalDto): Promise<Journal> {
-        return this.journalModel.findByIdAndUpdate(id, journal, { new: true }).exec();
+        return this.journalModel
+            .findByIdAndUpdate(id, journal, { new: true })
+            .exec();
     }
 
     async delete(id: string): Promise<Journal> {
         const journal = await this.findOne(id);
         // Delete The Journal Entry (1:1 Mapping);
-        this.journalEntryService.delete(journal.journalEntry._id.toString());
+        await this.journalEntryService.delete(journal.journalEntry._id.toString());
+        
+        // Find All Journals That Reference This Journal And Remove The Reference
+        await this.journalModel.updateMany({ workspace: journal.workspace }, {
+            $pull: {
+                'mindMapNode.edges':{
+                    target: journal.mindMapNode._id
+                }
+            }
+        }, { multi: true }).exec();
+   
         // Delete The Journal
         return this.journalModel.findByIdAndDelete(id).exec();
     }
+
+
 }
