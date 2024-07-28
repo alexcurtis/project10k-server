@@ -42,6 +42,14 @@ export class WorkspaceResolver {
     }
 
     @Mutation(() => Workspace)
+    async deleteJournalOnWorkspace(
+        @Args('id', { type: () => ID }) id: string,
+        @Args('journalId', { type: () => ID }) journalId: string,
+    ): Promise<Workspace> {
+        return this.workspaceService.deleteJournalFromWorkspace(id, journalId);
+    }
+
+    @Mutation(() => Workspace)
     async updateWorkspace(
         @Args('id', { type: () => ID }) id: string,
         @Args('workspace') workspace: InputWorkspaceDto,

@@ -2,14 +2,14 @@
 import { Field, ObjectType, ID } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
-import { Workspace } from '../workspace/workspace.model';
+import { Workspace, WorkspaceSchema } from '../workspace/workspace.model';
 import { JournalEntry } from './entry/journal-entry.model';
 
 @ObjectType()
 @Schema()
 class MindMapNodeEdge {
     @Field(() => ID)
-    @Prop({ type: MongooseSchema.Types.ObjectId})
+    @Prop({ type: MongooseSchema.Types.ObjectId })
     target: MongooseSchema.Types.ObjectId;
 }
 
@@ -34,7 +34,7 @@ const MindMapNodePositionSchema = SchemaFactory.createForClass(MindMapNodePositi
 export class MindMapNode {
     @Field(() => ID, { nullable: true })
     _id: Types.ObjectId;
-    
+
     @Field(() => MindMapNodePosition)
     @Prop({ type: MindMapNodePositionSchema })
     position: MindMapNodePosition;

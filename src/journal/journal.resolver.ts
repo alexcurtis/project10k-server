@@ -35,7 +35,7 @@ export class JournalResolver {
     }
 
     @Mutation(() => Journal)
-    async deleteBook(
+    async deleteJournal(
         @Args('id', { type: () => ID }) id: string
     ): Promise<Journal> {
         return this.journalService.delete(id);

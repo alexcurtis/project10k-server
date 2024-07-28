@@ -42,7 +42,10 @@ export class JournalService {
     }
 
     async delete(id: string): Promise<Journal> {
+        const journal = await this.findOne(id);
+        // Delete The Journal Entry (1:1 Mapping);
+        this.journalEntryService.delete(journal.journalEntry._id.toString());
+        // Delete The Journal
         return this.journalModel.findByIdAndDelete(id).exec();
     }
-
 }

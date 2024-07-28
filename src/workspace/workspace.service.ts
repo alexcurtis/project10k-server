@@ -48,7 +48,20 @@ export class WorkspaceService {
         const newJournal = await this.journalService.createOnWorkspace(workspace);
         workspace.journals.push(newJournal);
         return workspace.save();
-    }    
+    }
+
+    async deleteJournalFromWorkspace(id: string, journalId: string): Promise<Workspace> {
+        // Delete the Journal
+        const journal = await this.journalService.delete(journalId);
+        // Update Workspace Journal Array -> Remove Journal ID
+        return this.workspaceModel.findByIdAndUpdate(id, {
+            $pullAll: {
+                journals: [{_id: journalId}]
+            },
+        }, { new: true })
+        .populate('journals', null, Journal.name)
+        .exec();   
+    }
 
     async update(id: string, workspace: InputWorkspaceDto): Promise<Workspace> {
         return this.workspaceModel.findByIdAndUpdate(id, workspace, { new: true }).exec();

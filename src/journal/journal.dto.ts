@@ -29,6 +29,9 @@ class MindMapNodePositionInput {
 
 @InputType()
 class MindMapNodeInput {
+    @Field(() => ID, { nullable: true })
+    _id: Schema.Types.ObjectId;
+
     @Field(() => MindMapNodePositionInput, { nullable: true })
     position: MindMapNodePositionInput;
 

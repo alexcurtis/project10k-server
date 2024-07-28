@@ -27,3 +27,4 @@ export class Workspace extends Document {
 }
 
 export const WorkspaceSchema = SchemaFactory.createForClass(Workspace);
+
