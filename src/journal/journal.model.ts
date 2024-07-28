@@ -8,6 +8,10 @@ import { JournalEntry } from './entry/journal-entry.model';
 @ObjectType()
 @Schema()
 class MindMapNodeEdge {
+    @Field(() => String, { nullable: false })
+    @Prop({ type: String })
+    _id: string;
+
     @Field(() => ID)
     @Prop({ type: MongooseSchema.Types.ObjectId })
     target: MongooseSchema.Types.ObjectId;

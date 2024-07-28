@@ -14,6 +14,9 @@ export const defaultJournalData = {
 
 @InputType()
 class MindMapNodeEdgeInput {
+    @Field(() => String, { nullable: true })
+    _id: string;
+    
     @Field(() => ID)
     target: Schema.Types.ObjectId;
 }
