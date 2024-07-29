@@ -47,7 +47,10 @@ export class WorkspaceService {
         // Each Account Has 1 Initial Journal (And Never Any Fewer)
         const newJournal = await this.journalService.createOnWorkspace(workspace);
         workspace.journals.push(newJournal);
-        return workspace.save();
+        await workspace.save();
+        // Return A Fresh Workspace (So Journal Entries Not Populated)
+        // TODO - SEE IF I CAN ADJUST THIS WITHOUT DOING A FRESH PULL
+        return this.findOne(id); 
     }
 
     async deleteJournalFromWorkspace(id: string, journalId: string): Promise<Workspace> {
