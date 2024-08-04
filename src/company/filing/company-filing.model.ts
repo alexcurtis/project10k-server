@@ -15,6 +15,10 @@ export class CompanyFiling extends Document {
     externalId: string;
 
     @Field()
+    // @Prop({
+    //     type: String,
+    //     enum: ['10K', '10Q'],
+    // })
     @Prop()
     type: string;
 

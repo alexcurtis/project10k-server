@@ -14,7 +14,10 @@ export class Document extends MongooseDocument {
     _id: Types.ObjectId;
 
     @Field()
-    @Prop()
+    @Prop({
+        type: String,
+        enum: ['html', 'pdf'],
+    })
     type: string;
 
     @Field()
