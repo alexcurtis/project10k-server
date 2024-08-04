@@ -9,9 +9,11 @@ import { Journal } from '../journal/journal.model';
 
 @Injectable()
 export class WorkspaceService {
-    constructor(@InjectModel(Workspace.name)
+    constructor(
+        @InjectModel(Workspace.name)
         private workspaceModel: Model<Workspace>,
-        private journalService: JournalService) { }
+        private journalService: JournalService,
+    ) {}
 
     async findAll(): Promise<Workspace[]> {
         return this.workspaceModel.find().exec();
@@ -34,10 +36,11 @@ export class WorkspaceService {
         const defaultWorkspace = new this.workspaceModel({
             name: 'Untitled Workspace',
             account,
-            journals: []
+            journals: [],
         });
         // Each Account Has 1 Initial Journal (And Never Any Fewer)
-        const defaultJournal = await this.journalService.createOnWorkspace(defaultWorkspace);
+        const defaultJournal =
+            await this.journalService.createOnWorkspace(defaultWorkspace);
         defaultWorkspace.journals.push(defaultJournal);
         return defaultWorkspace.save();
     }
@@ -45,33 +48,43 @@ export class WorkspaceService {
     async createNewJournalOnWorkspace(id): Promise<Workspace> {
         const workspace = await this.findOne(id);
         // Each Account Has 1 Initial Journal (And Never Any Fewer)
-        const newJournal = await this.journalService.createOnWorkspace(workspace);
+        const newJournal =
+            await this.journalService.createOnWorkspace(workspace);
         workspace.journals.push(newJournal);
         await workspace.save();
         // Return A Fresh Workspace (So Journal Entries Not Populated)
         // TODO - SEE IF I CAN ADJUST THIS WITHOUT DOING A FRESH PULL
-        return this.findOne(id); 
+        return this.findOne(id);
     }
 
-    async deleteJournalFromWorkspace(id: string, journalId: string): Promise<Workspace> {
+    async deleteJournalFromWorkspace(
+        id: string,
+        journalId: string,
+    ): Promise<Workspace> {
         // Delete the Journal
         const journal = await this.journalService.delete(journalId);
         // Update Workspace Journal Array -> Remove Journal ID
-        return this.workspaceModel.findByIdAndUpdate(id, {
-            $pullAll: {
-                journals: [{_id: journalId}]
-            },
-        }, { new: true })
-        .populate('journals', null, Journal.name)
-        .exec();   
+        return this.workspaceModel
+            .findByIdAndUpdate(
+                id,
+                {
+                    $pullAll: {
+                        journals: [{ _id: journalId }],
+                    },
+                },
+                { new: true },
+            )
+            .populate('journals', null, Journal.name)
+            .exec();
     }
 
     async update(id: string, workspace: InputWorkspaceDto): Promise<Workspace> {
-        return this.workspaceModel.findByIdAndUpdate(id, workspace, { new: true }).exec();
+        return this.workspaceModel
+            .findByIdAndUpdate(id, workspace, { new: true })
+            .exec();
     }
 
     async delete(id: string): Promise<Workspace> {
         return this.workspaceModel.findByIdAndDelete(id).exec();
     }
-
 }

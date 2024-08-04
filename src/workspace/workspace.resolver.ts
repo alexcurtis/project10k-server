@@ -5,7 +5,7 @@ import { InputWorkspaceDto } from './workspace.dto';
 
 @Resolver(() => Workspace)
 export class WorkspaceResolver {
-    constructor(private readonly workspaceService: WorkspaceService) { }
+    constructor(private readonly workspaceService: WorkspaceService) {}
 
     @Query(() => [Workspace])
     async workspaces(): Promise<Workspace[]> {
@@ -14,7 +14,7 @@ export class WorkspaceResolver {
 
     @Query(() => Workspace)
     async workspace(
-        @Args('id', { type: () => ID }) id: string
+        @Args('id', { type: () => ID }) id: string,
     ): Promise<Workspace> {
         return this.workspaceService.findOne(id);
     }
@@ -26,10 +26,9 @@ export class WorkspaceResolver {
     //     return this.workspaceService.findAllByAccountId(id);
     // }
 
-
     @Mutation(() => Workspace)
     async createWorkspace(
-        @Args('workspace') workspace: InputWorkspaceDto
+        @Args('workspace') workspace: InputWorkspaceDto,
     ): Promise<Workspace> {
         return this.workspaceService.create(workspace);
     }
@@ -59,10 +58,8 @@ export class WorkspaceResolver {
 
     @Mutation(() => Workspace)
     async deleteBook(
-        @Args('id', { type: () => ID }) id: string
+        @Args('id', { type: () => ID }) id: string,
     ): Promise<Workspace> {
         return this.workspaceService.delete(id);
     }
-
-
 }
