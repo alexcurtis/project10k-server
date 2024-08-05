@@ -13,16 +13,17 @@ export class CompanyResolver {
     }
 
     @Query(() => Company)
-    async company(
-        @Args('id', { type: () => ID }) id: string,
-    ): Promise<Company> {
+    async company(@Args('id', { type: () => ID }) id: string): Promise<Company> {
         return this.companyService.findOne(id);
     }
 
+    @Query(() => [Company])
+    async companyDbInit(): Promise<Company[]> {
+        return this.companyService.initDb();
+    }
+
     @Mutation(() => Company)
-    async createCompany(
-        @Args('company') company: InputCompanyDto,
-    ): Promise<Company> {
+    async createCompany(@Args('company') company: InputCompanyDto): Promise<Company> {
         return this.companyService.create(company);
     }
 

@@ -13,17 +13,8 @@ export class CompanyFilingResolver {
     }
 
     @Query(() => CompanyFiling)
-    async companyFiling(
-        @Args('id', { type: () => ID }) id: string,
-    ): Promise<CompanyFiling> {
+    async companyFiling(@Args('id', { type: () => ID }) id: string): Promise<CompanyFiling> {
         return this.companyFilingService.findOne(id);
-    }
-
-    @Mutation(() => CompanyFiling)
-    async createCompanyFiling(
-        @Args('companyFiling') companyFiling: InputCompanyFilingDto,
-    ): Promise<CompanyFiling> {
-        return this.companyFilingService.create(companyFiling);
     }
 
     @Mutation(() => CompanyFiling)
@@ -33,11 +24,4 @@ export class CompanyFilingResolver {
     ): Promise<CompanyFiling> {
         return this.companyFilingService.update(id, companyFiling);
     }
-
-    // @Mutation(() => CompanyFiling)
-    // async deleteCompanyFiling(
-    //     @Args('id', { type: () => ID }) id: string
-    // ): Promise<CompanyFiling> {
-    //     return this.companyFilingService.delete(id);
-    // }
 }

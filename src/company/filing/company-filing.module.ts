@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CompanyFilingService } from './company-filing.service';
 import { CompanyFilingResolver } from './company-filing.resolver';
 import { CompanyFiling, CompanyFilingSchema } from './company-filing.model';
+import { CompanyModule } from '../company.module';
 
 @Module({
     providers: [CompanyFilingService, CompanyFilingResolver],
@@ -13,6 +14,8 @@ import { CompanyFiling, CompanyFilingSchema } from './company-filing.model';
                 schema: CompanyFilingSchema,
             },
         ]),
+        forwardRef(() => CompanyModule),
     ],
+    exports: [CompanyFilingService],
 })
 export class CompanyFilingModule {}

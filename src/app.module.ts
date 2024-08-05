@@ -13,7 +13,6 @@ import { JournalModule } from './journal/journal.module';
 import { JournalEntryModule } from './journal/entry/journal-entry.module';
 import { CompanyModule } from './company/company.module';
 import { CompanyFilingModule } from './company/filing/company-filing.module';
-import { DocumentModule } from './document/document.module';
 
 @Module({
     imports: [
@@ -47,7 +46,6 @@ import { DocumentModule } from './document/document.module';
         JournalEntryModule,
         CompanyModule,
         CompanyFilingModule,
-        DocumentModule,
     ],
 })
 export class AppModule {}

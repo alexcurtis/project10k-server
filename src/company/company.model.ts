@@ -2,6 +2,7 @@
 import { Field, HideField, ObjectType, ID } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
+import { CompanyFiling } from './filing/company-filing.model';
 
 @ObjectType()
 @Schema({ timestamps: true })
@@ -21,6 +22,12 @@ export class Company extends Document {
     @Field()
     @Prop()
     title: string;
+
+    @Field(() => [CompanyFiling])
+    @Prop({
+        type: [{ type: MongooseSchema.Types.ObjectId, ref: 'CompanyFiling' }],
+    })
+    filings: CompanyFiling[];
 }
 
 export const CompanySchema = SchemaFactory.createForClass(Company);

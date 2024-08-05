@@ -16,4 +16,10 @@ export class InputCompanyFilingDto {
 
     @Field()
     filedOn: Date;
+
+    @Field()
+    format: string;
+
+    @Field()
+    location: string;
 }

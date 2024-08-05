@@ -31,7 +31,8 @@ class MindMapNodePosition {
     y: number;
 }
 
-const MindMapNodePositionSchema = SchemaFactory.createForClass(MindMapNodePosition);
+const MindMapNodePositionSchema =
+    SchemaFactory.createForClass(MindMapNodePosition);
 
 @ObjectType()
 @Schema()

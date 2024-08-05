@@ -21,10 +21,7 @@ export class WorkspaceService {
 
     async findOne(id: string): Promise<Workspace> {
         // Populate The Workspaces As Well
-        return this.workspaceModel
-            .findById(id)
-            .populate('journals', null, Journal.name)
-            .exec();
+        return this.workspaceModel.findById(id).populate('journals', null, Journal.name).exec();
     }
 
     async create(workspace: InputWorkspaceDto): Promise<Workspace> {
@@ -39,8 +36,7 @@ export class WorkspaceService {
             journals: [],
         });
         // Each Account Has 1 Initial Journal (And Never Any Fewer)
-        const defaultJournal =
-            await this.journalService.createOnWorkspace(defaultWorkspace);
+        const defaultJournal = await this.journalService.createOnWorkspace(defaultWorkspace);
         defaultWorkspace.journals.push(defaultJournal);
         return defaultWorkspace.save();
     }
@@ -48,8 +44,7 @@ export class WorkspaceService {
     async createNewJournalOnWorkspace(id): Promise<Workspace> {
         const workspace = await this.findOne(id);
         // Each Account Has 1 Initial Journal (And Never Any Fewer)
-        const newJournal =
-            await this.journalService.createOnWorkspace(workspace);
+        const newJournal = await this.journalService.createOnWorkspace(workspace);
         workspace.journals.push(newJournal);
         await workspace.save();
         // Return A Fresh Workspace (So Journal Entries Not Populated)
@@ -57,10 +52,7 @@ export class WorkspaceService {
         return this.findOne(id);
     }
 
-    async deleteJournalFromWorkspace(
-        id: string,
-        journalId: string,
-    ): Promise<Workspace> {
+    async deleteJournalFromWorkspace(id: string, journalId: string): Promise<Workspace> {
         // Delete the Journal
         const journal = await this.journalService.delete(journalId);
         // Update Workspace Journal Array -> Remove Journal ID
@@ -79,9 +71,7 @@ export class WorkspaceService {
     }
 
     async update(id: string, workspace: InputWorkspaceDto): Promise<Workspace> {
-        return this.workspaceModel
-            .findByIdAndUpdate(id, workspace, { new: true })
-            .exec();
+        return this.workspaceModel.findByIdAndUpdate(id, workspace, { new: true }).exec();
     }
 
     async delete(id: string): Promise<Workspace> {
