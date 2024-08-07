@@ -38,3 +38,5 @@ export class Company extends Document {
 }
 
 export const CompanySchema = SchemaFactory.createForClass(Company);
+// Text Search Index
+CompanySchema.index({ title: 'text', ticker: 'text' });

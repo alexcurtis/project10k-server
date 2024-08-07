@@ -24,6 +24,10 @@ export class CompanyService {
         return this.companyModel.findById(id).exec();
     }
 
+    async search(term: string): Promise<Company[]> {
+        return this.companyModel.find({ $text: { $search: term } }).exec();
+    }
+
     // For Dev Purposes. Init DB With Companies From SEC Json
     async initDb(): Promise<Company[]> {
         for (const secCompanyIndex in secCompanyJson) {

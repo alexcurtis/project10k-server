@@ -18,6 +18,11 @@ export class CompanyResolver {
     }
 
     @Query(() => [Company])
+    async companySearch(@Args('term', { type: () => String }) term: string): Promise<Company[]> {
+        return this.companyService.search(term);
+    }
+
+    @Query(() => [Company])
     async companyDbInit(): Promise<Company[]> {
         return this.companyService.initDb();
     }
