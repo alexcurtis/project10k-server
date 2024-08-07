@@ -17,11 +17,11 @@ export class CompanyFilingResolver {
         return this.companyFilingService.findOne(id);
     }
 
-    @Mutation(() => CompanyFiling)
-    async updateCompanyFiling(
-        @Args('id', { type: () => ID }) id: string,
-        @Args('companyFiling') companyFiling: InputCompanyFilingDto,
-    ): Promise<CompanyFiling> {
-        return this.companyFilingService.update(id, companyFiling);
-    }
+    // @Mutation(() => CompanyFiling)
+    // async updateCompanyFiling(
+    //     @Args('id', { type: () => ID }) id: string,
+    //     @Args('companyFiling') companyFiling: InputCompanyFilingDto,
+    // ): Promise<CompanyFiling> {
+    //     return this.companyFilingService.update(id, companyFiling);
+    // }
 }

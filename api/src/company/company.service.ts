@@ -26,14 +26,13 @@ export class CompanyService {
 
     // For Dev Purposes. Init DB With Companies From SEC Json
     async initDb(): Promise<Company[]> {
-        // // CIKs are 10 digit numbers with leading zeros
-        // const cikZeroPad = (cik) => String(cik).padStart(10, '0');
         for (const secCompanyIndex in secCompanyJson) {
             const secCompany = secCompanyJson[secCompanyIndex];
             const newCompany = new this.companyModel({
                 externalId: secCompany.cik_str,
                 ticker: secCompany.ticker,
                 title: secCompany.title,
+                database: 'ussec',
             });
             await newCompany.save();
         }
@@ -45,13 +44,24 @@ export class CompanyService {
         return newCompany.save();
     }
 
-    async createCompanyFiling(id: string, filing: InputCompanyFilingDto): Promise<Company> {
+    // async createCompanyFiling(id: string, filing: InputCompanyFilingDto): Promise<Company> {
+    //     const company = await this.findOne(id);
+    //     if (!company) {
+    //         throw new NotFoundException(`Company with Id ${id} not found`);
+    //     }
+    //     const companyFiling = await this.companyFilingService.create(company, filing);
+    //     company.filings.push(companyFiling);
+    //     return company.save();
+    // }
+
+    async updateCompanyFilings(id: string): Promise<Company> {
+        console.log('company service', id);
         const company = await this.findOne(id);
         if (!company) {
             throw new NotFoundException(`Company with Id ${id} not found`);
         }
-        const companyFiling = await this.companyFilingService.create(company, filing);
-        company.filings.push(companyFiling);
+        const newCompanyFilings = await this.companyFilingService.update(company);
+        company.filings = company.filings.concat(newCompanyFilings);
         return company.save();
     }
 

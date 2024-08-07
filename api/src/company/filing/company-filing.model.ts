@@ -15,17 +15,18 @@ export class CompanyFiling extends Document {
     company: Company;
 
     @Field()
-    @Prop()
+    @Prop({
+        type: String,
+        unique: true,
+        index: true,
+        required: true,
+    })
     // Reference On Edgar
-    externalId: string;
+    apidbId: string;
 
     @Field()
-    // @Prop({
-    //     type: String,
-    //     enum: ['10K', '10Q'],
-    // })
     @Prop()
-    type: string;
+    form: string;
 
     @Field()
     @Prop()
@@ -42,7 +43,7 @@ export class CompanyFiling extends Document {
     @Field()
     @Prop({
         type: String,
-        enum: ['html', 'pdf'],
+        enum: ['HTML', 'XML', 'PDF', 'UNKNOWN'],
     })
     format: string;
 

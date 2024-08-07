@@ -23,6 +23,13 @@ export class Company extends Document {
     @Prop()
     title: string;
 
+    @Field()
+    @Prop({
+        type: String,
+        enum: ['ussec'],
+    })
+    database: string;
+
     @Field(() => [CompanyFiling])
     @Prop({
         type: [{ type: MongooseSchema.Types.ObjectId, ref: 'CompanyFiling' }],

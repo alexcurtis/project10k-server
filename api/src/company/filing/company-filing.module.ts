@@ -4,6 +4,7 @@ import { CompanyFilingService } from './company-filing.service';
 import { CompanyFilingResolver } from './company-filing.resolver';
 import { CompanyFiling, CompanyFilingSchema } from './company-filing.model';
 import { CompanyModule } from '../company.module';
+import { MicroservicesModule } from 'src/microservices/microservices.module';
 
 @Module({
     providers: [CompanyFilingService, CompanyFilingResolver],
@@ -14,6 +15,7 @@ import { CompanyModule } from '../company.module';
                 schema: CompanyFilingSchema,
             },
         ]),
+        MicroservicesModule,
         forwardRef(() => CompanyModule),
     ],
     exports: [CompanyFilingService],

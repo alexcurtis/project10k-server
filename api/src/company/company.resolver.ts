@@ -35,6 +35,11 @@ export class CompanyResolver {
         return this.companyService.update(id, company);
     }
 
+    @Mutation(() => Company)
+    async updateCompanyFilings(@Args('id', { type: () => ID }) id: string): Promise<Company> {
+        return this.companyService.updateCompanyFilings(id);
+    }
+
     // @Mutation(() => Company)
     // async deleteCompany(
     //     @Args('id', { type: () => ID }) id: string

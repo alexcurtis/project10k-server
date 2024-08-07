@@ -13,6 +13,7 @@ import { JournalModule } from './journal/journal.module';
 import { JournalEntryModule } from './journal/entry/journal-entry.module';
 import { CompanyModule } from './company/company.module';
 import { CompanyFilingModule } from './company/filing/company-filing.module';
+import { MicroservicesModule } from './microservices/microservices.module';
 
 @Module({
     imports: [
@@ -40,6 +41,7 @@ import { CompanyFilingModule } from './company/filing/company-filing.module';
                 dbName: 'project10k',
             }),
         }),
+        MicroservicesModule,
         AccountModule,
         WorkspaceModule,
         JournalModule,
