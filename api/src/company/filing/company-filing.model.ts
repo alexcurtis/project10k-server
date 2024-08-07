@@ -32,7 +32,7 @@ export class CompanyFiling extends Document {
     @Prop()
     name: string;
 
-    @Field()
+    @Field({ nullable: true })
     @Prop()
     period: Date;
 

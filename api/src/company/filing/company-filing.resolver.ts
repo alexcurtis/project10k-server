@@ -7,14 +7,14 @@ import { InputCompanyFilingDto } from './company-filing.dto';
 export class CompanyFilingResolver {
     constructor(private readonly companyFilingService: CompanyFilingService) {}
 
-    @Query(() => [CompanyFiling])
-    async companyFilings(): Promise<CompanyFiling[]> {
-        return this.companyFilingService.findAll();
-    }
-
     @Query(() => CompanyFiling)
     async companyFiling(@Args('id', { type: () => ID }) id: string): Promise<CompanyFiling> {
         return this.companyFilingService.findOne(id);
+    }
+
+    @Query(() => [CompanyFiling])
+    async companyFilings(@Args('companyId', { type: () => ID }) companyId: string): Promise<CompanyFiling[]> {
+        return this.companyFilingService.findAll(companyId);
     }
 
     // @Mutation(() => CompanyFiling)

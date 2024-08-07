@@ -48,6 +48,8 @@ export class CompanyService {
         return newCompany.save();
     }
 
+    // Company Filings ----
+
     // async createCompanyFiling(id: string, filing: InputCompanyFilingDto): Promise<Company> {
     //     const company = await this.findOne(id);
     //     if (!company) {
