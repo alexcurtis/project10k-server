@@ -49,7 +49,11 @@ export class CompanyFiling extends Document {
 
     @Field()
     @Prop()
-    location: string;
+    path: string;
+
+    @Field()
+    @Prop()
+    filename: string;
 }
 
 export const CompanyFilingSchema = SchemaFactory.createForClass(CompanyFiling);

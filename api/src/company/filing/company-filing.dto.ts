@@ -21,5 +21,8 @@ export class InputCompanyFilingDto {
     format: string;
 
     @Field()
-    location: string;
+    path: string;
+
+    @Field()
+    filename: string;
 }

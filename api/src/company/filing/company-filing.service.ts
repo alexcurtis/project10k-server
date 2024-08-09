@@ -15,7 +15,8 @@ interface IFiling {
     period: string;
     filedOn: string;
     format: string;
-    location: string;
+    path: string;
+    filename: string;
 }
 
 @Injectable()
@@ -62,7 +63,10 @@ export class CompanyFilingService {
         await Promise.all(
             filings.map(async (filing) => {
                 try {
-                    const newFiling = await this.companyFilingModel.create(filing);
+                    const newFiling = await this.companyFilingModel.create({
+                        ...filing,
+                        company,
+                    });
                     newFillings.push(newFiling);
                 } catch (error) {
                     if (error.code === 11000) {

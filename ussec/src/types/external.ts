@@ -5,5 +5,6 @@ export interface IFiling {
   period: string;
   filedOn: string;
   format: string;
-  location: string;
+  path: string;
+  filename: string;
 }

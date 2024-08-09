@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ApidbService } from './apidb.service';
 import { HttpModule } from '@nestjs/axios';
+import { ApidbController } from './apidb.controller';
 
 @Module({
   providers: [ApidbService],
@@ -11,5 +12,6 @@ import { HttpModule } from '@nestjs/axios';
     }),
   ],
   exports: [ApidbService],
+  controllers: [ApidbController],
 })
 export class ApidbModule {}

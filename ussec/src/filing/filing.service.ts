@@ -13,14 +13,10 @@ const FILETYPES = {
 export class FilingService {
   constructor(private readonly apiDbService: ApidbService) {}
 
-  createDocumentLocation(
-    cik: string,
-    accessionNumber: string,
-    primaryDocument: string,
-  ) {
+  createDocumentPath(cik: string, accessionNumber: string) {
     // Strip - Character From Accession Numbers
     const nAcession = accessionNumber.replaceAll('-', '');
-    return `https://www.sec.gov/Archives/edgar/data/${cik}/${nAcession}/${primaryDocument}`;
+    return `${cik}/${nAcession}`;
   }
 
   createDocumentType(primaryDocument) {
@@ -35,11 +31,7 @@ export class FilingService {
       const primaryDocument = filings.primaryDocument[index];
       const format = this.createDocumentType(primaryDocument);
 
-      const location = this.createDocumentLocation(
-        cik,
-        accessionNumber,
-        primaryDocument,
-      );
+      const path = this.createDocumentPath(cik, accessionNumber);
 
       return {
         apidbId: accessionNumber,
@@ -48,7 +40,8 @@ export class FilingService {
         period: filings.reportDate[index],
         filedOn: filings.filingDate[index],
         format,
-        location,
+        path,
+        filename: primaryDocument,
       };
     });
   }
