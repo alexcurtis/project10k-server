@@ -13,8 +13,11 @@ export class CompanyFilingResolver {
     }
 
     @Query(() => [CompanyFiling])
-    async companyFilings(@Args('companyId', { type: () => ID }) companyId: string): Promise<CompanyFiling[]> {
-        return this.companyFilingService.findAll(companyId);
+    async companyFilings(
+        @Args('companyId', { type: () => ID }) companyId: string,
+        @Args('forms', { type: () => [String], nullable: true }) forms: string[],
+    ): Promise<CompanyFiling[]> {
+        return this.companyFilingService.findAll(companyId, forms);
     }
 
     // @Mutation(() => CompanyFiling)

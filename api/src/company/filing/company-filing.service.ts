@@ -26,8 +26,15 @@ export class CompanyFilingService {
         @Inject('USSEC') private readonly ussecProxy: ClientProxy,
     ) {}
 
-    async findAll(companyId: string): Promise<CompanyFiling[]> {
-        return this.companyFilingModel.find({ company: companyId }).exec();
+    async findAll(companyId: string, forms: string[]): Promise<CompanyFiling[]> {
+        const filters = forms ? { form: { $in: forms } } : undefined;
+        return this.companyFilingModel
+            .find({
+                company: companyId,
+                format: 'HTML',
+                ...filters,
+            })
+            .exec();
     }
 
     async findOne(id: string): Promise<CompanyFiling> {
