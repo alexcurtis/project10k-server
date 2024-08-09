@@ -4,16 +4,17 @@ import {
   createProxyMiddleware,
   responseInterceptor,
 } from 'http-proxy-middleware';
+// Have To Import Via Require (For Some Reason)
 const htmlFindReplace = require('html-find-replace-element-attrs');
 
 const SEC_DATA_URL = 'https://www.sec.gov/Archives/edgar/data';
+const ASSET_URL = 'http://localhost:3005/apidbdocproxy/asset';
 
 function htmlImgTagSrcSetProxy(html: string, path) {
-  const url = `http://localhost:3005/apidbdocproxy/asset`;
   const query = `?path=${path}&filename`;
   return htmlFindReplace.replace(
     html,
-    (item: any) => `${url}${query}=${item.value}`,
+    (item: any) => `${ASSET_URL}${query}=${item.value}`,
     {
       tag: 'img',
       attr: 'src',
@@ -24,7 +25,6 @@ function htmlImgTagSrcSetProxy(html: string, path) {
 const requestRouter = (req: Request) => {
   // Strip Out The Doc Proxy URL Prefix
   const { path, filename } = req.query;
-  console.log('doc request', `${SEC_DATA_URL}/${path}/${filename}`);
   return `${SEC_DATA_URL}/${path}/${filename}`;
 };
 
@@ -32,13 +32,13 @@ const headerProxy = (proxyReq, req) => {
   proxyReq.setHeader('USER-AGENT', 'testsecapi@gmail.com');
 };
 
+// Documents (Filings)
 const docProxy = createProxyMiddleware({
   router: requestRouter,
   on: {
     proxyReq: headerProxy,
     proxyRes: responseInterceptor(async (responseBuffer, _proxyRes, req) => {
       const response = responseBuffer.toString('utf8');
-      //   console.log('req', req.baseUrl, req);
       const { path } = req.query;
       console.log('query', req.query);
       return htmlImgTagSrcSetProxy(response, path);
@@ -49,6 +49,7 @@ const docProxy = createProxyMiddleware({
   selfHandleResponse: true,
 });
 
+// Assets On A Document (Images)
 const assetProxy = createProxyMiddleware({
   router: requestRouter,
   on: {
