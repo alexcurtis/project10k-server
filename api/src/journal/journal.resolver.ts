@@ -1,11 +1,11 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
 import { Journal } from './journal.model';
 import { JournalService } from './journal.service';
-import { InputJournalDto } from './journal.dto';
+import { InputCitation, InputJournalDto } from './journal.dto';
 
 @Resolver(() => Journal)
 export class JournalResolver {
-    constructor(private readonly journalService: JournalService) { }
+    constructor(private readonly journalService: JournalService) {}
 
     @Query(() => [Journal])
     async journals(): Promise<Journal[]> {
@@ -13,16 +13,12 @@ export class JournalResolver {
     }
 
     @Query(() => Journal)
-    async journal(
-        @Args('id', { type: () => ID }) id: string
-    ): Promise<Journal> {
+    async journal(@Args('id', { type: () => ID }) id: string): Promise<Journal> {
         return this.journalService.findOne(id);
     }
 
     @Mutation(() => Journal)
-    async createJournal(
-        @Args('journal') journal: InputJournalDto
-    ): Promise<Journal> {
+    async createJournal(@Args('journal') journal: InputJournalDto): Promise<Journal> {
         return this.journalService.create(journal);
     }
 
@@ -35,11 +31,15 @@ export class JournalResolver {
     }
 
     @Mutation(() => Journal)
-    async deleteJournal(
-        @Args('id', { type: () => ID }) id: string
-    ): Promise<Journal> {
+    async deleteJournal(@Args('id', { type: () => ID }) id: string): Promise<Journal> {
         return this.journalService.delete(id);
     }
 
-
+    @Mutation(() => Journal)
+    async addCitationToJournal(
+        @Args('id', { type: () => ID }) id: string,
+        @Args('citation') citation: InputCitation,
+    ): Promise<Journal> {
+        return this.journalService.addCitation(id, citation);
+    }
 }

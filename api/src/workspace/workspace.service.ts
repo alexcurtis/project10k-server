@@ -41,7 +41,7 @@ export class WorkspaceService {
         return defaultWorkspace.save();
     }
 
-    async createNewJournalOnWorkspace(id): Promise<Workspace> {
+    async createNewJournalOnWorkspace(id: string): Promise<Workspace> {
         const workspace = await this.findOne(id);
         // Each Account Has 1 Initial Journal (And Never Any Fewer)
         const newJournal = await this.journalService.createOnWorkspace(workspace);

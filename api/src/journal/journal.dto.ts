@@ -1,4 +1,5 @@
 import { InputType, Field, ID } from '@nestjs/graphql';
+import { GraphQLJSONObject } from 'graphql-type-json';
 import { Schema } from 'mongoose';
 
 export const defaultJournalData = {
@@ -6,17 +7,18 @@ export const defaultJournalData = {
     mindMapNode: {
         position: {
             x: 200,
-            y: 200
+            y: 200,
         },
-        edges: []
-    }
-}
+        edges: [],
+    },
+    citations: [],
+};
 
 @InputType()
 class MindMapNodeEdgeInput {
     @Field(() => String, { nullable: true })
     _id: string;
-    
+
     @Field(() => ID)
     target: Schema.Types.ObjectId;
 }
@@ -40,6 +42,24 @@ class MindMapNodeInput {
 
     @Field(() => [MindMapNodeEdgeInput], { nullable: true })
     edges: MindMapNodeEdgeInput[];
+}
+
+@InputType()
+export class InputCitation {
+    @Field(() => ID, { nullable: true })
+    _id: Schema.Types.ObjectId;
+
+    @Field(() => String, { nullable: false })
+    text: string;
+
+    @Field(() => GraphQLJSONObject, { nullable: false })
+    range: Object;
+
+    @Field(() => ID, { nullable: false })
+    company: Schema.Types.ObjectId;
+
+    @Field(() => ID, { nullable: false })
+    filing: Schema.Types.ObjectId;
 }
 
 @InputType()

@@ -4,6 +4,9 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
 import { Workspace, WorkspaceSchema } from '../workspace/workspace.model';
 import { JournalEntry } from './entry/journal-entry.model';
+import { GraphQLJSONObject } from 'graphql-type-json';
+import { Company } from 'src/company/company.model';
+import { CompanyFiling } from 'src/company/filing/company-filing.model';
 
 @ObjectType()
 @Schema()
@@ -31,8 +34,7 @@ class MindMapNodePosition {
     y: number;
 }
 
-const MindMapNodePositionSchema =
-    SchemaFactory.createForClass(MindMapNodePosition);
+const MindMapNodePositionSchema = SchemaFactory.createForClass(MindMapNodePosition);
 
 @ObjectType()
 @Schema()
@@ -50,6 +52,31 @@ export class MindMapNode {
 }
 
 const MindMapNodeSchema = SchemaFactory.createForClass(MindMapNode);
+
+@ObjectType()
+@Schema()
+export class Citation {
+    @Field(() => ID, { nullable: true })
+    _id: Types.ObjectId;
+
+    @Field()
+    @Prop()
+    text: string;
+
+    @Field(() => GraphQLJSONObject)
+    @Prop({ type: JSON })
+    range: Object;
+
+    @Field(() => ID)
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Company' })
+    company: Company;
+
+    @Field(() => ID)
+    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'CompanyFiling' })
+    filing: CompanyFiling;
+}
+
+const CitationSchema = SchemaFactory.createForClass(Citation);
 
 @ObjectType()
 @Schema({ timestamps: true })
@@ -72,6 +99,10 @@ export class Journal extends Document {
     @Field(() => MindMapNode)
     @Prop({ type: MindMapNodeSchema, required: true })
     mindMapNode: MindMapNode;
+
+    @Field(() => [Citation])
+    @Prop({ type: [CitationSchema] })
+    citations: Citation[];
 }
 
 export const JournalSchema = SchemaFactory.createForClass(Journal);
