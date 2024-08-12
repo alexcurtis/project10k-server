@@ -42,4 +42,12 @@ export class JournalResolver {
     ): Promise<Journal> {
         return this.journalService.addCitation(id, citation);
     }
+
+    @Mutation(() => Journal)
+    async updateCitationOnJournal(
+        @Args('id', { type: () => ID }) id: string,
+        @Args('citation') citation: InputCitation,
+    ): Promise<Journal> {
+        return this.journalService.updateCitation(id, citation);
+    }
 }

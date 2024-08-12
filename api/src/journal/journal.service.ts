@@ -84,4 +84,19 @@ export class JournalService {
             )
             .exec();
     }
+
+    async updateCitation(id: string, citation: InputCitation): Promise<Journal> {
+        // At The Moment All I Need Is To Update 'embeddedOnJournalEntry' If Need More. Make This More DTO driven
+        return this.journalModel
+            .findOneAndUpdate(
+                { _id: id, 'citations._id': citation._id },
+                {
+                    $set: {
+                        'citations.$.embeddedOnJournalEntry': citation.embeddedOnJournalEntry,
+                    },
+                },
+                { new: true },
+            )
+            .exec();
+    }
 }

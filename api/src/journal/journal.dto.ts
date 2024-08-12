@@ -49,17 +49,20 @@ export class InputCitation {
     @Field(() => ID, { nullable: true })
     _id: Schema.Types.ObjectId;
 
-    @Field(() => String, { nullable: false })
+    @Field(() => String, { nullable: true })
     text: string;
 
-    @Field(() => GraphQLJSONObject, { nullable: false })
+    @Field(() => GraphQLJSONObject, { nullable: true })
     range: Object;
 
-    @Field(() => ID, { nullable: false })
+    @Field(() => ID, { nullable: true })
     company: Schema.Types.ObjectId;
 
-    @Field(() => ID, { nullable: false })
+    @Field(() => ID, { nullable: true })
     filing: Schema.Types.ObjectId;
+
+    @Field(() => Boolean, { nullable: true, defaultValue: false })
+    embeddedOnJournalEntry: boolean;
 }
 
 @InputType()

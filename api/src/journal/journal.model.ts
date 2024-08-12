@@ -54,7 +54,7 @@ export class MindMapNode {
 const MindMapNodeSchema = SchemaFactory.createForClass(MindMapNode);
 
 @ObjectType()
-@Schema()
+@Schema({ timestamps: true })
 export class Citation {
     @Field(() => ID, { nullable: true })
     _id: Types.ObjectId;
@@ -74,6 +74,13 @@ export class Citation {
     @Field(() => ID)
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'CompanyFiling' })
     filing: CompanyFiling;
+
+    @Field(() => Date)
+    updatedAt: Date;
+
+    @Field()
+    @Prop()
+    embeddedOnJournalEntry: boolean;
 }
 
 const CitationSchema = SchemaFactory.createForClass(Citation);
