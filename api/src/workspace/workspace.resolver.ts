@@ -13,9 +13,7 @@ export class WorkspaceResolver {
     }
 
     @Query(() => Workspace)
-    async workspace(
-        @Args('id', { type: () => ID }) id: string,
-    ): Promise<Workspace> {
+    async workspace(@Args('id', { type: () => ID }) id: string): Promise<Workspace> {
         return this.workspaceService.findOne(id);
     }
 
@@ -27,16 +25,12 @@ export class WorkspaceResolver {
     // }
 
     @Mutation(() => Workspace)
-    async createWorkspace(
-        @Args('workspace') workspace: InputWorkspaceDto,
-    ): Promise<Workspace> {
+    async createWorkspace(@Args('workspace') workspace: InputWorkspaceDto): Promise<Workspace> {
         return this.workspaceService.create(workspace);
     }
 
     @Mutation(() => Workspace)
-    async createNewJournalOnWorkspace(
-        @Args('id', { type: () => ID }) id: string,
-    ): Promise<Workspace> {
+    async createNewJournalOnWorkspace(@Args('id', { type: () => ID }) id: string): Promise<Workspace> {
         return this.workspaceService.createNewJournalOnWorkspace(id);
     }
 
@@ -57,9 +51,17 @@ export class WorkspaceResolver {
     }
 
     @Mutation(() => Workspace)
-    async deleteBook(
+    async addCompanyToWorkspace(
         @Args('id', { type: () => ID }) id: string,
+        @Args('companyId', { type: () => ID }) companyId: string,
     ): Promise<Workspace> {
-        return this.workspaceService.delete(id);
+        return this.workspaceService.addCompany(id, companyId);
     }
+
+    // @Mutation(() => Workspace)
+    // async deleteBook(
+    //     @Args('id', { type: () => ID }) id: string,
+    // ): Promise<Workspace> {
+    //     return this.workspaceService.delete(id);
+    // }
 }

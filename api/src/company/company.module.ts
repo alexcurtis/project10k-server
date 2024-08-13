@@ -16,5 +16,6 @@ import { CompanyFilingModule } from './filing/company-filing.module';
         ]),
         forwardRef(() => CompanyFilingModule),
     ],
+    exports: [CompanyService],
 })
 export class CompanyModule {}

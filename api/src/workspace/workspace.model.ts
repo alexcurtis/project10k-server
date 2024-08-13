@@ -4,27 +4,31 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
 import { Account } from '../account/account.model';
 import { Journal } from '../journal/journal.model';
+import { Company } from 'src/company/company.model';
 
 @ObjectType()
 @Schema({ timestamps: true })
 export class Workspace extends Document {
-    @Field(() => ID,{ nullable: true })
+    @Field(() => ID, { nullable: true })
     _id: Types.ObjectId;
 
     @Field()
-    @Prop({ defaultValue: 'Untitled Workspace'})
+    @Prop({ defaultValue: 'Untitled Workspace' })
     name: string;
 
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Account' })
     account: Account;
 
     @Field(() => Date)
-    updatedAt: Date
+    updatedAt: Date;
 
     @Field(() => [Journal])
     @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Journal' }] })
     journals: Journal[];
+
+    @Field(() => [Company])
+    @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Company' }] })
+    companies: Company[];
 }
 
 export const WorkspaceSchema = SchemaFactory.createForClass(Workspace);
-

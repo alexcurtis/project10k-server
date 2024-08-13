@@ -67,11 +67,11 @@ export class Citation {
     @Prop({ type: JSON })
     range: Object;
 
-    @Field(() => ID)
+    @Field(() => Company)
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Company' })
     company: Company;
 
-    @Field(() => ID)
+    @Field(() => CompanyFiling)
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'CompanyFiling' })
     filing: CompanyFiling;
 
@@ -99,7 +99,7 @@ export class Journal extends Document {
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Workspace' })
     workspace: Workspace;
 
-    @Field(() => ID)
+    @Field(() => JournalEntry)
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'JournalEntry' })
     journalEntry: JournalEntry;
 

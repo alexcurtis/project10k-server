@@ -19,7 +19,12 @@ export class JournalService {
     }
 
     async findOne(id: string): Promise<Journal> {
-        return this.journalModel.findById(id).exec();
+        return this.journalModel
+            .findById(id)
+            .populate('citations.company')
+            .populate('citations.filing')
+            .populate('journalEntry')
+            .exec();
     }
 
     // TODO - DTO NOT SETUP WITH ENTRY OR BACK LINK ID TO WORKSPACE. MAYBE PASS WORKSPACE ID AS A PARAM FROM RESOLVER?
@@ -82,7 +87,11 @@ export class JournalService {
                 },
                 { new: true },
             )
+            .populate('citations.company')
+            .populate('citations.filing')
             .exec();
+
+        // TODO - WHEN A CITATION IS ADDED - A COMPANY IS ADDED TO WORKSPACE??????
     }
 
     async updateCitation(id: string, citation: InputCitation): Promise<Journal> {

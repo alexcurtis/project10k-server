@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Workspace } from './workspace.model';
@@ -6,6 +6,7 @@ import { Account } from '../account/account.model';
 import { InputWorkspaceDto } from './workspace.dto';
 import { JournalService } from '../journal/journal.service';
 import { Journal } from '../journal/journal.model';
+import { CompanyService } from 'src/company/company.service';
 
 @Injectable()
 export class WorkspaceService {
@@ -13,6 +14,7 @@ export class WorkspaceService {
         @InjectModel(Workspace.name)
         private workspaceModel: Model<Workspace>,
         private journalService: JournalService,
+        private companyService: CompanyService,
     ) {}
 
     async findAll(): Promise<Workspace[]> {
@@ -34,6 +36,7 @@ export class WorkspaceService {
             name: 'Untitled Workspace',
             account,
             journals: [],
+            companies: [],
         });
         // Each Account Has 1 Initial Journal (And Never Any Fewer)
         const defaultJournal = await this.journalService.createOnWorkspace(defaultWorkspace);
@@ -76,5 +79,23 @@ export class WorkspaceService {
 
     async delete(id: string): Promise<Workspace> {
         return this.workspaceModel.findByIdAndDelete(id).exec();
+    }
+
+    async addCompany(id: string, companyId: string): Promise<Workspace> {
+        const company = await this.companyService.findOne(id);
+        if (!company) {
+            throw new NotFoundException(`Company with Id ${id} not found`);
+        }
+        return this.workspaceModel
+            .findByIdAndUpdate(
+                id,
+                {
+                    $push: {
+                        companies: company,
+                    },
+                },
+                { new: true },
+            )
+            .exec();
     }
 }
