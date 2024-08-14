@@ -106,6 +106,8 @@ export class JournalService {
                 },
                 { new: true },
             )
+            .populate('citations.company')
+            .populate('citations.filing')
             .exec();
     }
 }
