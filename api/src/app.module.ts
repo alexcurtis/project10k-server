@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { join } from 'path';
 import GraphQLJSON from 'graphql-type-json';
+import { UUIDResolver } from 'graphql-scalars';
 
 import mongodbConfig from './config/mongodb.config';
 import { AccountModule } from './account/account.module';
@@ -31,7 +32,7 @@ import { MicroservicesModule } from './microservices/microservices.module';
                 playground: true,
                 debug: configService.get<boolean>('DEBUG'),
                 uploads: false,
-                resolvers: { JSON: GraphQLJSON },
+                resolvers: { JSON: GraphQLJSON, UUID: UUIDResolver },
             }),
         }),
         MongooseModule.forRootAsync({

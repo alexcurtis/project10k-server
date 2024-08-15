@@ -7,6 +7,7 @@ import { JournalEntry } from './entry/journal-entry.model';
 import { GraphQLJSONObject } from 'graphql-type-json';
 import { Company } from 'src/company/company.model';
 import { CompanyFiling } from 'src/company/filing/company-filing.model';
+import { UUIDResolver } from 'graphql-scalars';
 
 @ObjectType()
 @Schema()
@@ -56,8 +57,9 @@ const MindMapNodeSchema = SchemaFactory.createForClass(MindMapNode);
 @ObjectType()
 @Schema({ timestamps: true })
 export class Citation {
-    @Field(() => ID, { nullable: true })
-    _id: Types.ObjectId;
+    @Field(() => UUIDResolver, { nullable: true })
+    @Prop()
+    _id: Types.UUID;
 
     @Field()
     @Prop()
