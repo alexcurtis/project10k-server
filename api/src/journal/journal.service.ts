@@ -19,12 +19,7 @@ export class JournalService {
     }
 
     async findOne(id: string): Promise<Journal> {
-        return this.journalModel
-            .findById(id)
-            .populate('citations.company')
-            .populate('citations.filing')
-            .populate('journalEntry')
-            .exec();
+        return this.journalModel.findById(id).populate('journalEntry').exec();
     }
 
     // TODO - DTO NOT SETUP WITH ENTRY OR BACK LINK ID TO WORKSPACE. MAYBE PASS WORKSPACE ID AS A PARAM FROM RESOLVER?
@@ -43,10 +38,6 @@ export class JournalService {
         defaultJournal.journalEntry = defaultJournalEntry;
         return defaultJournal.save();
     }
-
-    // async update(id: string, journal: InputJournalDto): Promise<Journal> {
-    //     return this.journalModel.findByIdAndUpdate(id, journal, { new: true }).exec();
-    // }
 
     async update(id: string, journal: InputJournalDto): Promise<Journal> {
         return this.journalModel.findByIdAndUpdate(id, journal, { new: true }).exec();
@@ -76,38 +67,38 @@ export class JournalService {
         return this.journalModel.findByIdAndDelete(id).exec();
     }
 
-    async addCitation(id: string, citation: InputCitation): Promise<Journal> {
-        return this.journalModel
-            .findByIdAndUpdate(
-                id,
-                {
-                    $push: {
-                        citations: citation,
-                    },
-                },
-                { new: true },
-            )
-            .populate('citations.company')
-            .populate('citations.filing')
-            .exec();
+    // async addCitation(id: string, citation: InputCitation): Promise<Journal> {
+    //     return this.journalModel
+    //         .findByIdAndUpdate(
+    //             id,
+    //             {
+    //                 $push: {
+    //                     citations: citation,
+    //                 },
+    //             },
+    //             { new: true },
+    //         )
+    //         .populate('citations.company')
+    //         .populate('citations.filing')
+    //         .exec();
 
-        // TODO - WHEN A CITATION IS ADDED - A COMPANY IS ADDED TO WORKSPACE??????
-    }
+    //     // TODO - WHEN A CITATION IS ADDED - A COMPANY IS ADDED TO WORKSPACE??????
+    // }
 
-    async updateCitation(id: string, citation: InputCitation): Promise<Journal> {
-        // At The Moment All I Need Is To Update 'embeddedOnJournalEntry' If Need More. Make This More DTO driven
-        return this.journalModel
-            .findOneAndUpdate(
-                { _id: id, 'citations._id': citation._id },
-                {
-                    $set: {
-                        'citations.$.embeddedOnJournalEntry': citation.embeddedOnJournalEntry,
-                    },
-                },
-                { new: true },
-            )
-            .populate('citations.company')
-            .populate('citations.filing')
-            .exec();
-    }
+    // async updateCitation(id: string, citation: InputCitation): Promise<Journal> {
+    //     // At The Moment All I Need Is To Update 'embeddedOnJournalEntry' If Need More. Make This More DTO driven
+    //     return this.journalModel
+    //         .findOneAndUpdate(
+    //             { _id: id, 'citations._id': citation._id },
+    //             {
+    //                 $set: {
+    //                     'citations.$.embeddedOnJournalEntry': citation.embeddedOnJournalEntry,
+    //                 },
+    //             },
+    //             { new: true },
+    //         )
+    //         .populate('citations.company')
+    //         .populate('citations.filing')
+    //         .exec();
+    // }
 }

@@ -7,6 +7,7 @@ import { WorkspaceModule } from '../workspace/workspace.module';
 import { JournalEntryModule } from './entry/journal-entry.module';
 import { CompanyModule } from 'src/company/company.module';
 import { CompanyFilingModule } from 'src/company/filing/company-filing.module';
+import { CitationModule } from 'src/citation/citation.module';
 
 @Module({
     providers: [JournalService, JournalResolver],
@@ -21,6 +22,7 @@ import { CompanyFilingModule } from 'src/company/filing/company-filing.module';
         forwardRef(() => JournalEntryModule),
         forwardRef(() => CompanyModule),
         forwardRef(() => CompanyFilingModule),
+        forwardRef(() => CitationModule),
     ],
     exports: [JournalService],
 })

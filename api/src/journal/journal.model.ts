@@ -2,12 +2,9 @@
 import { Field, ObjectType, ID } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';
-import { Workspace, WorkspaceSchema } from '../workspace/workspace.model';
+import { Workspace } from '../workspace/workspace.model';
 import { JournalEntry } from './entry/journal-entry.model';
-import { GraphQLJSONObject } from 'graphql-type-json';
-import { Company } from 'src/company/company.model';
-import { CompanyFiling } from 'src/company/filing/company-filing.model';
-import { UUIDResolver } from 'graphql-scalars';
+import { Citation } from 'src/citation/citation.model';
 
 @ObjectType()
 @Schema()
@@ -56,39 +53,6 @@ const MindMapNodeSchema = SchemaFactory.createForClass(MindMapNode);
 
 @ObjectType()
 @Schema({ timestamps: true })
-export class Citation {
-    @Field(() => UUIDResolver, { nullable: true })
-    @Prop()
-    _id: Types.UUID;
-
-    @Field()
-    @Prop()
-    text: string;
-
-    @Field(() => GraphQLJSONObject)
-    @Prop({ type: JSON })
-    range: Object;
-
-    @Field(() => Company)
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Company' })
-    company: Company;
-
-    @Field(() => CompanyFiling)
-    @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'CompanyFiling' })
-    filing: CompanyFiling;
-
-    @Field(() => Date)
-    updatedAt: Date;
-
-    @Field()
-    @Prop()
-    embeddedOnJournalEntry: boolean;
-}
-
-const CitationSchema = SchemaFactory.createForClass(Citation);
-
-@ObjectType()
-@Schema({ timestamps: true })
 export class Journal extends Document {
     @Field(() => ID, { nullable: true })
     _id: Types.ObjectId;
@@ -110,7 +74,7 @@ export class Journal extends Document {
     mindMapNode: MindMapNode;
 
     @Field(() => [Citation])
-    @Prop({ type: [CitationSchema] })
+    @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Citation' }] })
     citations: Citation[];
 }
 
