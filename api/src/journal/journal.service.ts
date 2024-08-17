@@ -66,39 +66,4 @@ export class JournalService {
         // Delete The Journal
         return this.journalModel.findByIdAndDelete(id).exec();
     }
-
-    // async addCitation(id: string, citation: InputCitation): Promise<Journal> {
-    //     return this.journalModel
-    //         .findByIdAndUpdate(
-    //             id,
-    //             {
-    //                 $push: {
-    //                     citations: citation,
-    //                 },
-    //             },
-    //             { new: true },
-    //         )
-    //         .populate('citations.company')
-    //         .populate('citations.filing')
-    //         .exec();
-
-    //     // TODO - WHEN A CITATION IS ADDED - A COMPANY IS ADDED TO WORKSPACE??????
-    // }
-
-    // async updateCitation(id: string, citation: InputCitation): Promise<Journal> {
-    //     // At The Moment All I Need Is To Update 'embeddedOnJournalEntry' If Need More. Make This More DTO driven
-    //     return this.journalModel
-    //         .findOneAndUpdate(
-    //             { _id: id, 'citations._id': citation._id },
-    //             {
-    //                 $set: {
-    //                     'citations.$.embeddedOnJournalEntry': citation.embeddedOnJournalEntry,
-    //                 },
-    //             },
-    //             { new: true },
-    //         )
-    //         .populate('citations.company')
-    //         .populate('citations.filing')
-    //         .exec();
-    // }
 }

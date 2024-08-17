@@ -72,10 +72,6 @@ export class Journal extends Document {
     @Field(() => MindMapNode)
     @Prop({ type: MindMapNodeSchema, required: true })
     mindMapNode: MindMapNode;
-
-    @Field(() => [Citation])
-    @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'Citation' }] })
-    citations: Citation[];
 }
 
 export const JournalSchema = SchemaFactory.createForClass(Journal);

@@ -11,7 +11,6 @@ export const defaultJournalData = {
         },
         edges: [],
     },
-    citations: [],
 };
 
 @InputType()

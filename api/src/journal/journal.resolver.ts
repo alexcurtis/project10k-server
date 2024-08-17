@@ -34,20 +34,4 @@ export class JournalResolver {
     async deleteJournal(@Args('id', { type: () => ID }) id: string): Promise<Journal> {
         return this.journalService.delete(id);
     }
-
-    // @Mutation(() => Journal)
-    // async addCitationToJournal(
-    //     @Args('id', { type: () => ID }) id: string,
-    //     @Args('citation') citation: InputCitation,
-    // ): Promise<Journal> {
-    //     return this.journalService.addCitation(id, citation);
-    // }
-
-    // @Mutation(() => Journal)
-    // async updateCitationOnJournal(
-    //     @Args('id', { type: () => ID }) id: string,
-    //     @Args('citation') citation: InputCitation,
-    // ): Promise<Journal> {
-    //     return this.journalService.updateCitation(id, citation);
-    // }
 }
