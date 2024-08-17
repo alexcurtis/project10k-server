@@ -18,8 +18,11 @@ export class CitationResolver {
     }
 
     @Query(() => [Citation])
-    async citationsOnFiling(@Args('filingId', { type: () => ID }) filingId: string): Promise<Citation[]> {
-        return this.citationService.findAllOnFiling(filingId);
+    async citationsOnFiling(
+        @Args('workspaceId', { type: () => ID }) workspaceId: string,
+        @Args('filingId', { type: () => ID }) filingId: string,
+    ): Promise<Citation[]> {
+        return this.citationService.findAllOnFiling(workspaceId, filingId);
     }
 
     @Mutation(() => Citation)

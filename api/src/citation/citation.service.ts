@@ -19,8 +19,12 @@ export class CitationService {
         return this.citationModel.findById(id).populate('company').populate('filing').exec();
     }
 
-    async findAllOnFiling(filingId: string): Promise<Citation[]> {
-        return this.citationModel.find({ filing: filingId }).populate('company').populate('filing').exec();
+    async findAllOnFiling(workspaceId: string, filingId: string): Promise<Citation[]> {
+        return this.citationModel
+            .find({ workspace: workspaceId, filing: filingId })
+            .populate('company')
+            .populate('filing')
+            .exec();
     }
 
     async create(citation: InputCitationDto): Promise<Citation> {
