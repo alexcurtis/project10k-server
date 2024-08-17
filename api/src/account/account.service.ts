@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Account } from './account.model';
 import { WorkspaceService } from '../workspace/workspace.service';
 import { Workspace } from '../workspace/workspace.model';
 import { InputAccountDto } from './account.dto';
+import { InputWorkspaceDto } from 'src/workspace/workspace.dto';
 
 @Injectable()
 export class AccountService {
@@ -32,6 +33,37 @@ export class AccountService {
         const defaultWorkspace = await this.workspaceService.createDefault(newAccount);
         newAccount.workspaces.push(defaultWorkspace);
         return newAccount.save();
+    }
+
+    async createWorkspaceOnAccount(id: string, workspace: InputWorkspaceDto): Promise<Account> {
+        const account = await this.findOne(id);
+        if (!account) {
+            throw new NotFoundException(`Account with Id ${id} not found`);
+        }
+        const newWorkspace = await this.workspaceService.create({ ...workspace, account: account._id });
+        account.workspaces.push(newWorkspace);
+        return account.save();
+    }
+
+    async deleteWorkspaceOnAccount(id: string, workspaceId: string): Promise<Workspace> {
+        // Delete The Workspace
+        const deletedWorkspace = await this.workspaceService.delete(workspaceId);
+        if (!deletedWorkspace) {
+            throw new NotFoundException(`Workspace with Id ${workspaceId} not found`);
+        }
+        // Remove The Workspace Reference From The Account
+        await this.accountModel
+            .findByIdAndUpdate(
+                id,
+                {
+                    $pull: {
+                        workspaces: deletedWorkspace._id,
+                    },
+                },
+                { new: true },
+            )
+            .exec();
+        return deletedWorkspace;
     }
 
     async update(id: string, account: InputAccountDto): Promise<Account> {

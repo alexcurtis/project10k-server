@@ -28,21 +28,31 @@ export class WorkspaceService {
 
     async create(workspace: InputWorkspaceDto): Promise<Workspace> {
         const newWorkspace = new this.workspaceModel(workspace);
+        // Each Account Has 1 Initial Journal (And Never Any Fewer)
+        const defaultJournal = await this.journalService.createOnWorkspace(newWorkspace);
+        newWorkspace.journals.push(defaultJournal);
         return newWorkspace.save();
     }
 
     async createDefault(account: Account): Promise<Workspace> {
-        const defaultWorkspace = new this.workspaceModel({
-            name: 'Untitled Workspace',
-            account,
-            journals: [],
-            companies: [],
-        });
-        // Each Account Has 1 Initial Journal (And Never Any Fewer)
-        const defaultJournal = await this.journalService.createOnWorkspace(defaultWorkspace);
-        defaultWorkspace.journals.push(defaultJournal);
-        return defaultWorkspace.save();
+        return this.create({ name: 'Untitled Workspace', account: account._id });
     }
+
+    // async create(workspace: InputWorkspaceDto): Promise<Workspace> {
+    //     const newWorkspace = new this.workspaceModel(workspace);
+    //     return newWorkspace.save();
+    // }
+
+    // async createDefault(account: Account): Promise<Workspace> {
+    //     const defaultWorkspace = new this.workspaceModel({
+    //         ...defaultWorkspaceDto,
+    //         account,
+    //     });
+    //     // Each Account Has 1 Initial Journal (And Never Any Fewer)
+    //     const defaultJournal = await this.journalService.createOnWorkspace(defaultWorkspace);
+    //     defaultWorkspace.journals.push(defaultJournal);
+    //     return defaultWorkspace.save();
+    // }
 
     async createNewJournalOnWorkspace(id: string): Promise<Workspace> {
         const workspace = await this.findOne(id);
@@ -78,7 +88,14 @@ export class WorkspaceService {
     }
 
     async delete(id: string): Promise<Workspace> {
-        return this.workspaceModel.findByIdAndDelete(id).exec();
+        const workspace = await this.workspaceModel.findByIdAndDelete(id).exec();
+        // Delete All Attached Journals (and Their Journal Entry - Handled In The Journal Service)
+        await Promise.all(
+            workspace.journals.map(async (journal) => {
+                return this.journalService.delete(journal._id.toString());
+            }),
+        );
+        return workspace;
     }
 
     async addCompany(id: string, companyId: string): Promise<Workspace> {
