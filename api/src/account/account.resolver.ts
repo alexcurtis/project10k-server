@@ -4,17 +4,20 @@ import { AccountService } from './account.service';
 import { InputAccountDto } from './account.dto';
 import { InputWorkspaceDto } from 'src/workspace/workspace.dto';
 import { Workspace } from 'src/workspace/workspace.model';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Account)
 export class AccountResolver {
     constructor(private readonly accountService: AccountService) {}
 
-    @Query(() => [Account])
-    async accounts(): Promise<Account[]> {
-        return this.accountService.findAll();
-    }
+    // @Query(() => [Account])
+    // async accounts(): Promise<Account[]> {
+    //     return this.accountService.findAll();
+    // }
 
     @Query(() => Account)
+    @UseGuards(JwtAuthGuard)
     async account(@Args('id', { type: () => ID }) id: string): Promise<Account> {
         return this.accountService.findOne(id);
     }

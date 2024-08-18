@@ -12,17 +12,11 @@ export class UserService {
         private userModel: Model<User>,
     ) {}
 
-    // async findAll(): Promise<User[]> {
-    //     return this.userModel.find().exec();
-    // }
-
     async findOne(id: string): Promise<User> {
-        // Populate The Workspaces As Well
         return this.userModel.findById(id).exec();
     }
 
     async findByEmail(email: string): Promise<User> {
-        // Populate The Workspaces As Well
         return this.userModel.findOne({ email }).exec();
     }
 
