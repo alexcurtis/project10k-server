@@ -8,6 +8,8 @@ import GraphQLJSON from 'graphql-type-json';
 import { UUIDResolver } from 'graphql-scalars';
 
 import mongodbConfig from './config/mongodb.config';
+import { AuthModule } from './auth/auth.module';
+import { UserModule } from './user/user.module';
 import { AccountModule } from './account/account.module';
 import { WorkspaceModule } from './workspace/workspace.module';
 import { JournalModule } from './journal/journal.module';
@@ -42,6 +44,8 @@ import { MicroservicesModule } from './microservices/microservices.module';
                 dbName: 'project10k',
             }),
         }),
+        AuthModule,
+        UserModule,
         MicroservicesModule,
         AccountModule,
         WorkspaceModule,

@@ -1,13 +1,16 @@
 import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 import { Workspace } from './workspace.model';
 import { WorkspaceService } from './workspace.service';
 import { InputWorkspaceDto } from './workspace.dto';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 
 @Resolver(() => Workspace)
 export class WorkspaceResolver {
     constructor(private readonly workspaceService: WorkspaceService) {}
 
     @Query(() => [Workspace])
+    @UseGuards(JwtAuthGuard)
     async workspaces(): Promise<Workspace[]> {
         return this.workspaceService.findAll();
     }
