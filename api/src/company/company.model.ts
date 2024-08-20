@@ -11,13 +11,18 @@ export class Company extends Document {
     _id: Types.ObjectId;
 
     @Field()
-    @Prop()
-    // CIK On Edgar
-    externalId: string;
+    @Prop({
+        type: String,
+        unique: true,
+        index: true,
+        required: true,
+    })
+    // Reference On Edgar
+    apidbId: string;
 
-    @Field()
-    @Prop()
-    ticker: string;
+    @Field(() => [String])
+    @Prop({ type: [{ type: String }] })
+    ticker: string[];
 
     @Field()
     @Prop()
@@ -39,4 +44,4 @@ export class Company extends Document {
 
 export const CompanySchema = SchemaFactory.createForClass(Company);
 // Text Search Index
-CompanySchema.index({ title: 'text', ticker: 'text' });
+CompanySchema.index({ title: 'text' });

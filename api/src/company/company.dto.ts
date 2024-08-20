@@ -3,10 +3,10 @@ import { InputType, Field } from '@nestjs/graphql';
 @InputType()
 export class InputCompanyDto {
     @Field()
-    externalId: string;
+    apidbId: string;
 
-    @Field()
-    ticker: string;
+    @Field(() => [String])
+    ticker: string[];
 
     @Field()
     title: string;

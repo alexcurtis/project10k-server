@@ -2,10 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CompanyFiling } from './company-filing.model';
-import { InputCompanyFilingDto } from './company-filing.dto';
 import { Company } from '../company.model';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { hasFailedBecauseAlreadyExists } from 'src/utils/mongoose';
 
 // TODO - USE USSEC INTERFACE
 interface IFiling {
@@ -47,15 +47,16 @@ export class CompanyFilingService {
         return companyFiling.save();
     }
 
-    // async update(id: string, companyFiling: InputCompanyFilingDto): Promise<CompanyFiling> {
-    //     return this.companyFilingModel.findByIdAndUpdate(id, companyFiling, { new: true }).exec();
-    // }
+    // If Filings Exist For A Company
+    async exists(company: Company): Promise<CompanyFiling> {
+        return this.companyFilingModel.findOne({ company }).exec();
+    }
 
     // Update From External Provider
     async update(company: Company): Promise<CompanyFiling[]> {
-        const { externalId } = company;
+        const { apidbId } = company;
         const filings = await firstValueFrom(
-            this.ussecProxy.send<IFiling[]>({ cmd: 'company:filings:get' }, { company: externalId }),
+            this.ussecProxy.send<IFiling[]>({ cmd: 'company:filings:get' }, { company: apidbId }),
         );
 
         // Only Pass Back Newly Created Filings
@@ -69,7 +70,8 @@ export class CompanyFilingService {
                     });
                     newFillings.push(newFiling);
                 } catch (error) {
-                    if (error.code === 11000) {
+                    // Filing Already Exists In DB
+                    if (hasFailedBecauseAlreadyExists(error)) {
                         // Duplicate key error, skip this filing
                         console.log(`Duplicate key error for apidbId: ${filing.apidbId}`);
                     } else {

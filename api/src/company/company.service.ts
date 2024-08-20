@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, MongooseError } from 'mongoose';
 import { Company } from './company.model';
 import { InputCompanyDto } from './company.dto';
 import { CompanyFilingService } from './filing/company-filing.service';
-import { InputCompanyFilingDto } from './filing/company-filing.dto';
 
 import * as secCompanyJson from './company_tickers.json';
+import { hasFailedBecauseAlreadyExists } from 'src/utils/mongoose';
 
 @Injectable()
 export class CompanyService {
@@ -25,20 +25,46 @@ export class CompanyService {
     }
 
     async search(term: string): Promise<Company[]> {
-        return this.companyModel.find({ $text: { $search: term } }).exec();
+        // Search For The Companies
+        const companies = await this.companyModel.find({ $text: { $search: term } }).exec();
+        // TODO - Make This More Efficent - Update Only Every So Often
+        // Async + Optimisticly Pull and Update Company Filings When It Has Been Searched By User
+        Promise.all(
+            companies.map(async (company) => {
+                const exists = await this.companyFilingService.exists(company);
+                if (exists) {
+                    return; // For Now. Simply Pull If Does Not Exist. Later Extension Will Be To Refresh After A Certain Period
+                }
+                return this.companyFilingService.update(company);
+            }),
+        );
+        return companies;
     }
 
     // For Dev Purposes. Init DB With Companies From SEC Json
     async initDb(): Promise<Company[]> {
         for (const secCompanyIndex in secCompanyJson) {
             const secCompany = secCompanyJson[secCompanyIndex];
-            const newCompany = new this.companyModel({
-                externalId: secCompany.cik_str,
-                ticker: secCompany.ticker,
-                title: secCompany.title,
-                database: 'ussec',
-            });
-            await newCompany.save();
+            try {
+                await this.companyModel.create({
+                    apidbId: secCompany.cik_str,
+                    ticker: [secCompany.ticker],
+                    title: secCompany.title,
+                    database: 'ussec',
+                });
+            } catch (error) {
+                console.log('Error', error);
+                // If Duplicate On Key. Then Check Ticker And Append
+                if (hasFailedBecauseAlreadyExists(error)) {
+                    console.log('Is Duplicate!');
+                    await this.companyModel.findOneAndUpdate(
+                        { apidbId: secCompany.cik_str },
+                        {
+                            $addToSet: { ticker: secCompany.ticker },
+                        },
+                    );
+                }
+            }
         }
         return this.findAll();
     }

@@ -27,11 +27,11 @@ export class CompanyResolver {
         return this.companyService.search(term);
     }
 
-    // @Query(() => [Company])
+    @Query(() => [Company])
     // @UseGuards(JwtAuthGuard)
-    // async companyDbInit(): Promise<Company[]> {
-    //     return this.companyService.initDb();
-    // }
+    async companyDbInit(): Promise<Company[]> {
+        return this.companyService.initDb();
+    }
 
     @Mutation(() => Company)
     @UseGuards(JwtAuthGuard)
