@@ -17,6 +17,7 @@ export class Workspace extends Document {
     @Prop({ defaultValue: 'Untitled Workspace' })
     name: string;
 
+    @Field(() => Account)
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Account' })
     account: Account;
 

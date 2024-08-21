@@ -4,6 +4,7 @@ import { UserService } from './user.service';
 import { InputUserDto } from './user.dto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
+import { Me } from 'src/decorators/user.decorator';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -20,9 +21,17 @@ export class UserResolver {
         return this.userService.findOne(id);
     }
 
+    // Signed In User
+    @Query(() => User)
+    @UseGuards(JwtAuthGuard)
+    async me(@Me() user: User): Promise<User> {
+        // Me Decorator Does Not Work. For Now - Just return the same user
+        return this.userService.findOne('66c1ac635918559c4b64b7d0');
+    }
+
     @Mutation(() => User)
     @UseGuards(JwtAuthGuard)
-    async createUser(@Args('user') user: InputUserDto): Promise<User> {
-        return this.userService.create(user);
+    async createUser(@Args('user') user: InputUserDto, @Args('account') account: string): Promise<User> {
+        return this.userService.create(user, account);
     }
 }

@@ -3,6 +3,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserService } from './user.service';
 import { UserResolver } from './user.resolver';
 import { User, UserSchema } from './user.model';
+import { AccountModule } from 'src/account/account.module';
 
 @Module({
     providers: [UserService, UserResolver],
@@ -13,6 +14,7 @@ import { User, UserSchema } from './user.model';
                 schema: UserSchema,
             },
         ]),
+        forwardRef(() => AccountModule),
     ],
     exports: [UserService],
 })

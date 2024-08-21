@@ -46,6 +46,7 @@ import { MicroservicesModule } from './microservices/microservices.module';
                 debug: configService.get<boolean>('DEBUG'),
                 uploads: false,
                 resolvers: { JSON: GraphQLJSON, UUID: UUIDResolver },
+                context: ({ req }) => ({ req }),
             }),
         }),
         MongooseModule.forRootAsync({

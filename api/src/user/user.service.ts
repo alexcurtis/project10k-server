@@ -20,21 +20,14 @@ export class UserService {
         return this.userModel.findOne({ email }).exec();
     }
 
-    async create(user: InputUserDto): Promise<User> {
+    async create(user: InputUserDto, account: string): Promise<User> {
         // Hash The User Password
         const password = await hash(user.password, 8);
         const newUser = new this.userModel({
             ...user,
+            account,
             password,
         });
         return newUser.save();
     }
-
-    // async update(id: string, user: InputUserDto): Promise<User> {
-    //     return this.userModel.findByIdAndUpdate(id, user, { new: true }).exec();
-    // }
-
-    // async delete(id: string): Promise<User> {
-    //     return this.userModel.findByIdAndDelete(id).exec();
-    // }
 }
