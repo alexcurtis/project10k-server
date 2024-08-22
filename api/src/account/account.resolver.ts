@@ -6,6 +6,7 @@ import { InputWorkspaceDto } from 'src/workspace/workspace.dto';
 import { Workspace } from 'src/workspace/workspace.model';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
+import { InputUserDto } from 'src/user/user.dto';
 
 @Resolver(() => Account)
 export class AccountResolver {
@@ -17,10 +18,14 @@ export class AccountResolver {
         return this.accountService.findOne(id);
     }
 
-    // @Mutation(() => Account)
-    // async createAccount(@Args('account') account: InputAccountDto): Promise<Account> {
-    //     return this.accountService.create(account);
-    // }
+    // TODO - Dangerous UnGuarded Init Command.
+    @Mutation(() => Account)
+    async createAccount(
+        @Args('account') account: InputAccountDto,
+        @Args('admin') admin: InputUserDto,
+    ): Promise<Account> {
+        return this.accountService.create(account, admin);
+    }
 
     @Mutation(() => Account)
     @UseGuards(JwtAuthGuard)

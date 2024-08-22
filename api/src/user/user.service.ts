@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { hash } from 'bcryptjs';
 import { User } from './user.model';
 import { InputUserDto } from './user.dto';
+import { Account } from 'src/account/account.model';
 
 @Injectable()
 export class UserService {
@@ -20,7 +21,7 @@ export class UserService {
         return this.userModel.findOne({ email }).exec();
     }
 
-    async create(user: InputUserDto, account: string): Promise<User> {
+    async create(user: InputUserDto, account: Account): Promise<User> {
         // Hash The User Password
         const password = await hash(user.password, 8);
         const newUser = new this.userModel({

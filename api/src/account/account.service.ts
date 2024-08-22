@@ -6,6 +6,8 @@ import { WorkspaceService } from '../workspace/workspace.service';
 import { Workspace } from '../workspace/workspace.model';
 import { InputAccountDto } from './account.dto';
 import { InputWorkspaceDto } from 'src/workspace/workspace.dto';
+import { UserService } from 'src/user/user.service';
+import { InputUserDto } from 'src/user/user.dto';
 
 @Injectable()
 export class AccountService {
@@ -13,6 +15,7 @@ export class AccountService {
         @InjectModel(Account.name)
         private accountModel: Model<Account>,
         private workspaceService: WorkspaceService,
+        private userService: UserService,
     ) {}
 
     async findAll(): Promise<Account[]> {
@@ -24,11 +27,15 @@ export class AccountService {
         return this.accountModel.findById(id).populate('workspaces', null, Workspace.name).exec();
     }
 
-    async create(account: InputAccountDto): Promise<Account> {
+    async create(account: InputAccountDto, admin: InputUserDto): Promise<Account> {
         const newAccount = new this.accountModel({
             ...account,
             workspaces: [],
+            users: [],
         });
+        // Each Account Has 1 Admin User
+        const adminUser = await this.userService.create(admin, newAccount);
+        newAccount.users.push(adminUser);
         // Each Account Has 1 Initial Workspace
         const defaultWorkspace = await this.workspaceService.createDefault(newAccount);
         newAccount.workspaces.push(defaultWorkspace);

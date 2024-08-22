@@ -1,4 +1,3 @@
-// book.model.ts
 import { Field, ObjectType, ID } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types, Schema as MongooseSchema } from 'mongoose';

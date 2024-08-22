@@ -25,13 +25,13 @@ export class UserResolver {
     @Query(() => User)
     @UseGuards(JwtAuthGuard)
     async me(@Me() user: User): Promise<User> {
-        // Me Decorator Does Not Work. For Now - Just return the same user
-        return this.userService.findOne('66c1ac635918559c4b64b7d0');
+        // TODO - Me Decorator Does Not Work. For Now - Just return the same user
+        return this.userService.findByEmail('alexander@localhost');
     }
 
-    @Mutation(() => User)
-    @UseGuards(JwtAuthGuard)
-    async createUser(@Args('user') user: InputUserDto, @Args('account') account: string): Promise<User> {
-        return this.userService.create(user, account);
-    }
+    // @Mutation(() => User)
+    // @UseGuards(JwtAuthGuard)
+    // async createUser(@Args('user') user: InputUserDto, @Args('account') account: string): Promise<User> {
+    //     return this.userService.create(user, account);
+    // }
 }

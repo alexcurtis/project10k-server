@@ -29,7 +29,7 @@ export class CompanyService {
         const companies = await this.companyModel.find({ $text: { $search: term } }).exec();
         // TODO - Make This More Efficent - Update Only Every So Often
         // Async + Optimisticly Pull and Update Company Filings When It Has Been Searched By User
-        Promise.all(
+        await Promise.all(
             companies.map(async (company) => {
                 const exists = await this.companyFilingService.exists(company);
                 if (exists) {

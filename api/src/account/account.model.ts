@@ -11,6 +11,10 @@ export class Account extends Document {
     @Field(() => ID, { nullable: true })
     _id: Types.ObjectId;
 
+    @Field()
+    @Prop()
+    name: string;
+
     @Field(() => [User])
     @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: 'User' }] })
     users: User[];

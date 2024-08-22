@@ -27,6 +27,7 @@ export class CompanyResolver {
         return this.companyService.search(term);
     }
 
+    // TODO - Dangerous UnGuarded Init Command.
     @Query(() => [Company])
     // @UseGuards(JwtAuthGuard)
     async companyDbInit(): Promise<Company[]> {
