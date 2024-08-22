@@ -1,13 +1,13 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Account } from './account.model';
-import { WorkspaceService } from '../workspace/workspace.service';
-import { Workspace } from '../workspace/workspace.model';
-import { InputAccountDto } from './account.dto';
-import { InputWorkspaceDto } from 'src/workspace/workspace.dto';
-import { UserService } from 'src/user/user.service';
-import { InputUserDto } from 'src/user/user.dto';
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { InjectModel } from "@nestjs/mongoose";
+import { Model } from "mongoose";
+import { Account } from "./account.model";
+import { WorkspaceService } from "../workspace/workspace.service";
+import { Workspace } from "../workspace/workspace.model";
+import { InputAccountDto } from "./account.dto";
+import { InputWorkspaceDto } from "src/workspace/workspace.dto";
+import { UserService } from "src/user/user.service";
+import { InputUserDto } from "src/user/user.dto";
 
 @Injectable()
 export class AccountService {
@@ -15,7 +15,7 @@ export class AccountService {
         @InjectModel(Account.name)
         private accountModel: Model<Account>,
         private workspaceService: WorkspaceService,
-        private userService: UserService,
+        private userService: UserService
     ) {}
 
     async findAll(): Promise<Account[]> {
@@ -24,7 +24,7 @@ export class AccountService {
 
     async findOne(id: string): Promise<Account> {
         // Populate The Workspaces As Well
-        return this.accountModel.findById(id).populate('workspaces', null, Workspace.name).exec();
+        return this.accountModel.findById(id).populate("workspaces", null, Workspace.name).exec();
     }
 
     async create(account: InputAccountDto, admin: InputUserDto): Promise<Account> {
@@ -67,7 +67,7 @@ export class AccountService {
                         workspaces: deletedWorkspace._id,
                     },
                 },
-                { new: true },
+                { new: true }
             )
             .exec();
         return deletedWorkspace;

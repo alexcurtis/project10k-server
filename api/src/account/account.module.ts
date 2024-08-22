@@ -1,10 +1,10 @@
-import { Module, forwardRef } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { AccountService } from './account.service';
-import { AccountResolver } from './account.resolver';
-import { Account, AccountSchema } from './account.model';
-import { WorkspaceModule } from '../workspace/workspace.module';
-import { UserModule } from 'src/user/user.module';
+import { Module, forwardRef } from "@nestjs/common";
+import { MongooseModule } from "@nestjs/mongoose";
+import { AccountService } from "./account.service";
+import { AccountResolver } from "./account.resolver";
+import { Account, AccountSchema } from "./account.model";
+import { WorkspaceModule } from "../workspace/workspace.module";
+import { UserModule } from "src/user/user.module";
 
 @Module({
     providers: [AccountService, AccountResolver],
