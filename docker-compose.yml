@@ -9,7 +9,13 @@ services:
             - "3010:3010"
         networks:
             - backend
-
+    ussec:
+        container_name: ussec
+        build: ./ussec/
+        ports:
+            - "3005:3005"
+        networks:
+            - backend
 networks:
     backend:
         driver: bridge
