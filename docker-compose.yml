@@ -1,0 +1,15 @@
+services:
+    api:
+        container_name: api
+        build: ./api/
+        environment:
+            - PROJECT10K_JWT_SECRET="-p_73&f5y2X2z7_bAR:hFBZus~%-KDX"
+            - MONGO_URI=mongodb+srv://alexander:ZcxcLoslgZd6jTYT@project10k.gj1tt.mongodb.net/?retryWrites=true&w=majority&appName=project10k
+        ports:
+            - "3010:3010"
+        networks:
+            - backend
+
+networks:
+    backend:
+        driver: bridge
