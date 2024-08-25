@@ -5,6 +5,7 @@ FROM base AS builder
 
 # Add CorePack and Install Yarn 4
 RUN corepack enable && corepack prepare yarn@4
+ENV NODE_OPTIONS=--max-old-space-size=8000
 
 WORKDIR /usr/src/app
 COPY ./yarn.lock ./package.json ./
