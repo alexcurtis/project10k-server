@@ -1,9 +1,9 @@
-import { Resolver, Query, Mutation, Args, ID } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
-import { Workspace } from './workspace.model';
-import { WorkspaceService } from './workspace.service';
-import { InputWorkspaceDto } from './workspace.dto';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { Resolver, Query, Mutation, Args, ID } from "@nestjs/graphql";
+import { UseGuards } from "@nestjs/common";
+import { Workspace } from "./workspace.model";
+import { WorkspaceService } from "./workspace.service";
+import { InputWorkspaceDto } from "./workspace.dto";
+import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
 
 @Resolver(() => Workspace)
 export class WorkspaceResolver {
@@ -17,7 +17,7 @@ export class WorkspaceResolver {
 
     @Query(() => Workspace)
     @UseGuards(JwtAuthGuard)
-    async workspace(@Args('id', { type: () => ID }) id: string): Promise<Workspace> {
+    async workspace(@Args("id", { type: () => ID }) id: string): Promise<Workspace> {
         return this.workspaceService.findOne(id);
     }
 
@@ -30,21 +30,21 @@ export class WorkspaceResolver {
 
     @Mutation(() => Workspace)
     @UseGuards(JwtAuthGuard)
-    async createWorkspace(@Args('workspace') workspace: InputWorkspaceDto): Promise<Workspace> {
+    async createWorkspace(@Args("workspace") workspace: InputWorkspaceDto): Promise<Workspace> {
         return this.workspaceService.create(workspace);
     }
 
     @Mutation(() => Workspace)
     @UseGuards(JwtAuthGuard)
-    async createNewJournalOnWorkspace(@Args('id', { type: () => ID }) id: string): Promise<Workspace> {
+    async createNewJournalOnWorkspace(@Args("id", { type: () => ID }) id: string): Promise<Workspace> {
         return this.workspaceService.createNewJournalOnWorkspace(id);
     }
 
     @Mutation(() => Workspace)
     @UseGuards(JwtAuthGuard)
     async deleteJournalOnWorkspace(
-        @Args('id', { type: () => ID }) id: string,
-        @Args('journalId', { type: () => ID }) journalId: string,
+        @Args("id", { type: () => ID }) id: string,
+        @Args("journalId", { type: () => ID }) journalId: string
     ): Promise<Workspace> {
         return this.workspaceService.deleteJournalFromWorkspace(id, journalId);
     }
@@ -52,8 +52,8 @@ export class WorkspaceResolver {
     @Mutation(() => Workspace)
     @UseGuards(JwtAuthGuard)
     async updateWorkspace(
-        @Args('id', { type: () => ID }) id: string,
-        @Args('workspace') workspace: InputWorkspaceDto,
+        @Args("id", { type: () => ID }) id: string,
+        @Args("workspace") workspace: InputWorkspaceDto
     ): Promise<Workspace> {
         return this.workspaceService.update(id, workspace);
     }
@@ -61,8 +61,8 @@ export class WorkspaceResolver {
     @Mutation(() => Workspace)
     @UseGuards(JwtAuthGuard)
     async addCompanyToWorkspace(
-        @Args('id', { type: () => ID }) id: string,
-        @Args('companyId', { type: () => ID }) companyId: string,
+        @Args("id", { type: () => ID }) id: string,
+        @Args("companyId", { type: () => ID }) companyId: string
     ): Promise<Workspace> {
         return this.workspaceService.addCompany(id, companyId);
     }
