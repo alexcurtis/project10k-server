@@ -7,6 +7,7 @@ import { Workspace } from "src/workspace/workspace.model";
 import { JwtAuthGuard } from "src/guards/jwt-auth.guard";
 import { UseGuards } from "@nestjs/common";
 import { InputUserDto } from "src/user/user.dto";
+import { InputCheckListDto } from "src/checklist/checklist.dto";
 
 @Resolver(() => Account)
 export class AccountResolver {
@@ -43,6 +44,15 @@ export class AccountResolver {
         @Args("workspaceId", { type: () => ID }) workspaceId: string
     ): Promise<Workspace> {
         return this.accountService.deleteWorkspaceOnAccount(id, workspaceId);
+    }
+
+    @Mutation(() => Account)
+    @UseGuards(JwtAuthGuard)
+    async createCheckListOnAccount(
+        @Args("id", { type: () => ID }) id: string,
+        @Args("checkList", { type: () => InputCheckListDto }) checkList: InputCheckListDto
+    ): Promise<Account> {
+        return this.accountService.createCheckListOnAccount(id, checkList);
     }
 
     @Mutation(() => Account)

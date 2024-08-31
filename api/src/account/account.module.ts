@@ -5,6 +5,7 @@ import { AccountResolver } from "./account.resolver";
 import { Account, AccountSchema } from "./account.model";
 import { WorkspaceModule } from "../workspace/workspace.module";
 import { UserModule } from "src/user/user.module";
+import { CheckListModule } from "src/checklist/checklist.module";
 
 @Module({
     providers: [AccountService, AccountResolver],
@@ -17,6 +18,7 @@ import { UserModule } from "src/user/user.module";
         ]),
         forwardRef(() => WorkspaceModule),
         forwardRef(() => UserModule),
+        forwardRef(() => CheckListModule),
     ],
 })
 export class AccountModule {}

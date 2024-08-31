@@ -8,6 +8,8 @@ import { InputAccountDto } from "./account.dto";
 import { InputWorkspaceDto } from "src/workspace/workspace.dto";
 import { UserService } from "src/user/user.service";
 import { InputUserDto } from "src/user/user.dto";
+import { InputCheckListDto } from "src/checklist/checklist.dto";
+import { CheckListService } from "src/checklist/checklist.service";
 
 @Injectable()
 export class AccountService {
@@ -15,7 +17,8 @@ export class AccountService {
         @InjectModel(Account.name)
         private accountModel: Model<Account>,
         private workspaceService: WorkspaceService,
-        private userService: UserService
+        private userService: UserService,
+        private checkListService: CheckListService
     ) {}
 
     async findAll(): Promise<Account[]> {
@@ -71,6 +74,16 @@ export class AccountService {
             )
             .exec();
         return deletedWorkspace;
+    }
+
+    async createCheckListOnAccount(id: string, checkList: InputCheckListDto): Promise<Account> {
+        const account = await this.findOne(id);
+        if (!account) {
+            throw new NotFoundException(`Account with Id ${id} not found`);
+        }
+        const newCheckList = await this.checkListService.createOnAccount(checkList, account);
+        account.checklists.push(newCheckList);
+        return account.save();
     }
 
     async update(id: string, account: InputAccountDto): Promise<Account> {

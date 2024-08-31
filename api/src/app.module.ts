@@ -12,6 +12,7 @@ import mongodbConfig from "./config/mongodb.config";
 import { AuthModule } from "./auth/auth.module";
 import { UserModule } from "./user/user.module";
 import { AccountModule } from "./account/account.module";
+import { CheckListModule } from "./checklist/checklist.module";
 import { WorkspaceModule } from "./workspace/workspace.module";
 import { JournalModule } from "./journal/journal.module";
 import { JournalEntryModule } from "./journal/entry/journal-entry.module";
@@ -61,6 +62,7 @@ import { MicroservicesModule } from "./microservices/microservices.module";
         UserModule,
         MicroservicesModule,
         AccountModule,
+        CheckListModule,
         WorkspaceModule,
         JournalModule,
         JournalEntryModule,
