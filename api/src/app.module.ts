@@ -3,10 +3,10 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { ApolloDriver, ApolloDriverConfig } from "@nestjs/apollo";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
-import { join } from "path";
+// import { join } from "path";
 import GraphQLJSON from "graphql-type-json";
 import { UUIDResolver } from "graphql-scalars";
-import { LoggerModule } from "nestjs-pino";
+// import { LoggerModule } from "nestjs-pino";
 
 import mongodbConfig from "./config/mongodb.config";
 import { AuthModule } from "./auth/auth.module";
@@ -22,16 +22,16 @@ import { MicroservicesModule } from "./microservices/microservices.module";
 
 @Module({
     imports: [
-        LoggerModule.forRoot({
-            pinoHttp: {
-                transport: {
-                    target: "pino-pretty",
-                    options: {
-                        singleLine: true,
-                    },
-                },
-            },
-        }),
+        // LoggerModule.forRoot({
+        //     pinoHttp: {
+        //         transport: {
+        //             target: "pino-pretty",
+        //             options: {
+        //                 singleLine: true,
+        //             },
+        //         },
+        //     },
+        // }),
         ConfigModule.forRoot({
             load: [mongodbConfig],
             isGlobal: true,

@@ -15,6 +15,12 @@ export class CheckListResolver {
         return this.checklistService.findOne(id);
     }
 
+    @Query(() => [CheckList])
+    @UseGuards(JwtAuthGuard)
+    async checklists(@Args("accountId", { type: () => ID }) accountId: string): Promise<CheckList[]> {
+        return this.checklistService.findAllInAccount(accountId);
+    }
+
     @Mutation(() => CheckList)
     @UseGuards(JwtAuthGuard)
     async updateCheckList(

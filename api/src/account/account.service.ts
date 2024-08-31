@@ -27,7 +27,11 @@ export class AccountService {
 
     async findOne(id: string): Promise<Account> {
         // Populate The Workspaces As Well
-        return this.accountModel.findById(id).populate("workspaces", null, Workspace.name).exec();
+        return this.accountModel
+            .findById(id)
+            .populate("workspaces", null, Workspace.name)
+            .populate("checklists")
+            .exec();
     }
 
     async create(account: InputAccountDto, admin: InputUserDto): Promise<Account> {
@@ -82,8 +86,12 @@ export class AccountService {
             throw new NotFoundException(`Account with Id ${id} not found`);
         }
         const newCheckList = await this.checkListService.createOnAccount(checkList, account);
-        account.checklists.push(newCheckList);
-        return account.save();
+        // Only Add To Account Checklist if No Parent (Root Checklist)
+        if (!checkList.parent) {
+            account.checklists.push(newCheckList);
+            return account.save();
+        }
+        return account;
     }
 
     async update(id: string, account: InputAccountDto): Promise<Account> {

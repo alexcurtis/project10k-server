@@ -19,13 +19,13 @@ class CheckListScaleInput {
 
 @InputType()
 export class InputCheckListDto {
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     name: string;
 
     @Field(() => ID, { nullable: true })
     parent: Schema.Types.ObjectId;
 
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     question: string;
 
     @Field(() => String, { nullable: true })
@@ -34,10 +34,10 @@ export class InputCheckListDto {
     @Field(() => String, { nullable: true })
     why: string;
 
-    @Field(() => Boolean)
+    @Field(() => Boolean, { nullable: true })
     textual: boolean;
 
-    @Field(() => String)
+    @Field(() => String, { nullable: true })
     metric: string;
 
     @Field(() => CheckListScaleInput, { nullable: true })

@@ -36,7 +36,7 @@ export class CheckList extends Document {
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: "Account" })
     account: Account;
 
-    @Field()
+    @Field(() => String, { nullable: true })
     @Prop()
     name: string;
 
@@ -44,34 +44,34 @@ export class CheckList extends Document {
     @Prop({ type: MongooseSchema.Types.ObjectId, ref: "CheckList" })
     parent: CheckList;
 
-    @Field(() => [CheckList])
+    @Field(() => [CheckList], { nullable: true })
     @Prop({ type: [{ type: MongooseSchema.Types.ObjectId, ref: "CheckList" }] })
     children: CheckList[];
 
-    @Field()
+    @Field(() => String, { nullable: true })
     @Prop()
     question: string;
 
-    @Field()
+    @Field(() => String, { nullable: true })
     @Prop()
     formula: string;
 
-    @Field()
+    @Field(() => String, { nullable: true })
     @Prop()
     why: string;
 
-    @Field()
+    @Field(() => Boolean, { nullable: true })
     @Prop()
     textual: boolean;
 
-    @Field()
+    @Field(() => String, { nullable: true })
     @Prop({
         type: String,
         enum: ["PASS_FAIL", "SCALE", "NONE"],
     })
     metric: string;
 
-    @Field(() => CheckListScale)
+    @Field(() => CheckListScale, { nullable: true })
     @Prop({ type: CheckListScaleSchema })
     scale: CheckListScale;
 }
